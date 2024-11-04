@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: match
+  config:
+    import: database.yml
+server:
+  port: 8099
