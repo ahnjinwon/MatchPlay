@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+    <title>메인</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div>
+            <form action="/login/register" method="post">
+                <input name="memId" placeholder="id">
+                <input name="memPw" type="password" placeholder="password">
+                <input name="memName" placeholder="name">
+                <input name="memTel" placeholder="tel">
+                <select name="grade">
+                    <option value="low">초급</option>
+                    <option value="middle">중급</option>
+                    <option value="high">고급</option>
+                </select>
+                <button type="submit">회원가입</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
