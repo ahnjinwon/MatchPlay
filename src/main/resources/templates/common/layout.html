@@ -2,6 +2,7 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5"
 >
 <head>
     <title th:text="${title}">Insert title here</title>
@@ -24,7 +25,22 @@
 <body>
 <header class="bg-light py-3 border-bottom">
     <div class="container">
-        <div class="row align-items-center justify-content-end">
+        <!--로그인 이후-->
+        <div class="row align-items-center justify-content-end" sec:authorize="isAuthenticated()">
+            <div class="col-md-7 d-flex justify-content-end align-items-center gap-2">
+                <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/member/mypage}">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">마이페이지</button>
+                </a>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminpage}">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">관리자페이지</button>
+                </a>
+                <a th:href="@{/login/logout}">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">로그아웃</button>
+                </a>
+            </div>
+        </div>
+        <!--로그인 이전-->
+        <div class="row align-items-center justify-content-end" sec:authorize="isAnonymous()">
             <div class="col-md-7 d-flex justify-content-end align-items-center gap-2">
                 <form action="/login/signin" method="post" class="d-flex gap-2">
                     <input name="username" class="form-control form-control-sm" placeholder="아이디" required style="height: 50px;">

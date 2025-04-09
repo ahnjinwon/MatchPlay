@@ -30,12 +30,12 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login/signin")
                         .defaultSuccessUrl("/login/success", true)
                         .failureHandler((request, response, exception) -> {
-                            response.sendRedirect("/login/failure");
+                            response.sendRedirect("/login/failure?error=true");
                         })
                 )
                 .userDetailsService(customUserDetailsService)
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/login/logout")
                         .logoutSuccessUrl("/") // 로그아웃 후 메인 페이지로 이동
                 );
 

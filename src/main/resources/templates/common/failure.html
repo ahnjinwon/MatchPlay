@@ -11,8 +11,14 @@
 </head>
 <body>
     <div layout:fragment="content">
-            <p>main</p>
-            <p>login fail</p>
+        <p>main</p>
+        <p>login fail</p>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("error") === "true") {
+                alert("로그인 실패! 다시 시도해주세요.");
+            }
+        </script>
     </div>
 </body>
 </html>
