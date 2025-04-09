@@ -16,15 +16,6 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final LoginService loginService;
 
-//    @PostMapping("/signin")
-//    public String login(LoginDto loginDto){
-//        System.out.println(loginDto.getUsername());
-//        System.out.println(loginDto.getPassword());
-//        if(loginDto.getUsername().equals("admin") && loginDto.getPassword().equals("pass")){
-//            return "/common/success";
-//        }
-//        else return "redirect:/";
-//    }
     @GetMapping("/register")
     public String register(){
         return "/common/register";
@@ -37,8 +28,13 @@ public class LoginController {
         loginService.registMember(registDto);
         return "redirect:/";
     }
-    @GetMapping("success")
+    @GetMapping("/success")
     public String loginSuccess(){
         return "/common/success";
+    }
+    @GetMapping("/failure")
+    public String loginFail(){
+        System.out.println("실패!!");
+        return "/common/failure";
     }
 }
