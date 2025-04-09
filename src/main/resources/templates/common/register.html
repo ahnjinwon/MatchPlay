@@ -6,22 +6,83 @@
     <title>메인</title>
 </head>
 <body>
-    <div layout:fragment="content">
-        <div>
-            <form action="/login/register" method="post">
-                <input name="memId" placeholder="id">
-                <input name="memPw" type="password" placeholder="password">
-                <input name="memName" placeholder="name">
-                <input name="memTel" placeholder="tel">
-                <select name="grade">
-                    <option value="low">초급</option>
-                    <option value="middle">중급</option>
-                    <option value="high">고급</option>
-                </select>
-                <button type="submit">회원가입</button>
+<div layout:fragment="content" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="text-center mb-4">회원가입</h3>
+            <form action="/login/register" method="post" class="p-4 border rounded bg-light shadow-sm">
+                <div class="mb-3">
+                    <label for="memId" class="form-label">아이디</label>
+                    <div class="input-group">
+                        <input name="memId" id="memId" class="form-control" placeholder="아이디 입력" required>
+                        <button type="button" class="btn btn-outline-secondary" onclick="checkDuplicateId()">중복 확인</button>
+                    </div>
+                    <small id="idCheckResult" class="text-muted"></small>
+                </div>
+                <div class="mb-3">
+                    <label for="memPw" class="form-label">비밀번호</label>
+                    <input name="memPw" id="memPw" type="password" class="form-control" placeholder="비밀번호 입력" required>
+                </div>
+                <div class="mb-3">
+                    <label for="memName" class="form-label">이름</label>
+                    <input name="memName" id="memName" class="form-control" placeholder="이름 입력" required>
+                </div>
+                <div class="mb-3">
+                    <label for="memTel" class="form-label">전화번호</label>
+                    <input name="memTel" id="memTel" class="form-control" placeholder="01012341234" required>
+                </div>
+                <div class="mb-4">
+                    <label for="grade" class="form-label">레벨</label>
+                    <select name="grade" id="grade" class="form-select">
+                        <option value="low">초급</option>
+                        <option value="middle">중급</option>
+                        <option value="high">고급</option>
+                    </select>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary" id="registerBtn">회원가입</button>
+                </div>
             </form>
         </div>
     </div>
+    <script>
+        function checkDuplicateId() {
+            const memId = document.getElementById("memId").value;
+            const resultEl = document.getElementById("idCheckResult");
+            const registerBtn = document.getElementById("registerBtn");
 
+            if (!memId) {
+                alert("아이디를 입력해주세요.");
+                return;
+            }
+
+            fetch(`/login/check-id?memId=${memId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        resultEl.textContent = "이미 사용 중인 아이디입니다.";
+                        resultEl.className = "text-danger";
+                        registerBtn.disabled = true;
+                    } else {
+                        resultEl.textContent = "사용 가능한 아이디입니다!";
+                        resultEl.className = "text-success";
+                        registerBtn.disabled = false;
+                    }
+                })
+                .catch(err => {
+                    alert("서버 오류가 발생했습니다.");
+                    console.error(err);
+                    resultEl.textContent = "";
+                    registerBtn.disabled = true;
+                });
+        }
+    </script>
+    <script>
+        document.getElementById("memId").addEventListener("input", () => {
+        document.getElementById("registerBtn").disabled = true;
+        document.getElementById("idCheckResult").textContent = "";
+        });
+    </script>
+</div>
 </body>
 </html>

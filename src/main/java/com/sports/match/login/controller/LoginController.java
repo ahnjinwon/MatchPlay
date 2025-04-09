@@ -5,9 +5,9 @@ import com.sports.match.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/login")
@@ -27,6 +27,12 @@ public class LoginController {
         registDto.setMemPw(encodedPw);
         loginService.registMember(registDto);
         return "redirect:/";
+    }
+    @GetMapping("/check-id")
+    @ResponseBody
+    public Map<String, Boolean> checkId(@RequestParam("memId") String memId) {
+        boolean exists = loginService.checkById(memId);
+        return Map.of("exists", exists);
     }
     @GetMapping("/success")
     public String loginSuccess(){

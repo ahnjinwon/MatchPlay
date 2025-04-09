@@ -13,4 +13,8 @@ public class LoginService {
     public void registMember(RegistDto registDto) {
         loginDao.registMember(registDto);
     }
+
+    public boolean checkById(String memId) {
+        return loginDao.checkById(memId) > 0;
+    }
 }
