@@ -5,8 +5,8 @@
 <mapper namespace="com.sports.match.login.model.dao.LoginDao">
     <insert id="registMember" parameterType="com.sports.match.login.model.dto.RegistDto" useGeneratedKeys="true">
         INSERT INTO
-            MEMBER(mem_id, mem_pw, mem_name, mem_tel, grade)
-        VALUES(#{memId}, #{memPw}, #{memName}, #{memTel}, #{grade})
+            MEMBER(mem_id, mem_pw, mem_name, mem_tel, mem_email, grade)
+        VALUES(#{memId}, #{memPw}, #{memName}, #{memTel}, #{memEmail}, #{grade})
     </insert>
     <select id="checkById" resultType="int">
         SELECT COUNT(*)

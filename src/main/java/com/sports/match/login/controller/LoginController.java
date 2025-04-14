@@ -34,10 +34,6 @@ public class LoginController {
         boolean exists = loginService.checkById(memId);
         return Map.of("exists", exists);
     }
-    @GetMapping("/success")
-    public String loginSuccess(){
-        return "/common/success";
-    }
     @GetMapping("/failure")
     public String loginFail(){
         System.out.println("실패!!");

@@ -13,4 +13,5 @@ public class RegistDto {
     private String memName;
     private String memTel;
     private String grade;
+    private String memEmail;
 }

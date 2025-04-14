@@ -13,7 +13,9 @@ public class MemberDto {
     private String memPw;
     private String memName;
     private String memTel;
+    private String memEmail;
     private Timestamp createdAt;
     private String memRole;
     private String grade;
+    private String approved;
 }

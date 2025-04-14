@@ -23,12 +23,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화 (API 개발 시 필요)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/login/**", "/common/**", "/login/failure").permitAll() // 로그인, 회원가입은 인증 없이 접근 가능
+                        .requestMatchers("/","/login/**", "/common/**", "/login/failure", "/js/**", "/css/**", "/images/**").permitAll() // 로그인, 회원가입은 인증 없이 접근 가능
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
                 .formLogin(login -> login
                         .loginProcessingUrl("/login/signin")
-                        .defaultSuccessUrl("/login/success", true)
+                        .defaultSuccessUrl("/", true)
                         .failureHandler((request, response, exception) -> {
                             response.sendRedirect("/login/failure?error=true");
                         })
