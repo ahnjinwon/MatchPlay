@@ -17,11 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberDto memberDto = authMapper.selectMemberById(username);
-        return new org.springframework.security.core.userdetails.User(
-                memberDto.getMemId(), // DB에서 조회한 사용자 아이디
-                memberDto.getMemPw(), // DB에서 조회한 암호화된 비밀번호
-                AuthorityUtils.createAuthorityList(memberDto.getMemRole()) // 권한 설정 (예: ROLE_USER)
-                //이거 커스텀으로 만들어줘야할수도
-        );
+        if (memberDto == null) {
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+        return new CustomUserDetails(memberDto);
     }
 }

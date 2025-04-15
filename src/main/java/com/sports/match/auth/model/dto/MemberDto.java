@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 @Data
 public class MemberDto {
-    private String memNo;
+    private int memNo;
     private String memId;
     private String memPw;
     private String memName;

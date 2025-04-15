@@ -39,4 +39,4 @@ public class LoginController {
         System.out.println("실패!!");
         return "/common/failure";
     }
-}
+}//출석체크 db 생성, 본인 출석 여부 불러와서 메인에 자동 적용, 출석하기 활성화, 출석 통계 적용

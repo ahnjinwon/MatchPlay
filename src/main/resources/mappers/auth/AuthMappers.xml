@@ -8,4 +8,10 @@
         FROM MEMBER
         WHERE mem_id = #{memId}
     </select>
+
+    <insert id="attend" >
+        INSERT INTO
+        attendance (mem_no, att_date)
+        VALUES(#{memNo}, #{attDate})
+    </insert>
 </mapper>
