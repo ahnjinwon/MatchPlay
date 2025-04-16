@@ -25,10 +25,10 @@
             <p>오늘 회원들 출석현황</p>
             <p>코트 이용현황</p>
             <div th:if="${att}">
-                <a href="#" id="attendCancelButton" role="button">출석 취소</a>
+                <button id="attendCancelButton" type="button" class="btn btn-primary btn-sm">출석 취소</button>
             </div>
             <div th:unless="${att}">
-                <a href="#" id="attendButton" role="button">출석 하기</a>
+                <button id="attendButton" type="button" class="btn btn-primary btn-sm">출석 하기</button>
             </div>
 
         </div>

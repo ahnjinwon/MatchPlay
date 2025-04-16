@@ -11,17 +11,23 @@ public class CustomUserDetails implements UserDetails {
     private final int memNo;
     private final String username;
     private final String password;
+    private final String memName;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(MemberDto memberDto) {
         this.memNo = memberDto.getMemNo();    // memNo 추가!
         this.username = memberDto.getMemId();
         this.password = memberDto.getMemPw();
+        this.memName = memberDto.getMemName();
         this.authorities = AuthorityUtils.createAuthorityList(memberDto.getMemRole());
     }
 
     public int getMemNo() {
         return memNo;
+    }
+
+    public String getMemName() {
+        return memName;
     }
 
     @Override

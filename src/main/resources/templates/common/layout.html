@@ -28,6 +28,10 @@
         <!--로그인 이후-->
         <div class="row align-items-center justify-content-end" sec:authorize="isAuthenticated()">
             <div class="col-md-7 d-flex justify-content-end align-items-center gap-2">
+                <!-- 유저 이름 표시 -->
+                <span class="user-name" style="font-size: 16px; margin-right: 15px;">
+                    안녕하세요, <span th:text="${#authentication.principal.memName}">유저이름</span>님
+                </span>
                 <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/member/mypage}">
                     <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">마이페이지</button>
                 </a>
