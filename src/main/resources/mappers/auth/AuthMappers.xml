@@ -14,4 +14,16 @@
         attendance (mem_no, att_date)
         VALUES(#{memNo}, #{attDate})
     </insert>
+
+    <select id="getAttend">
+        SELECT *
+        FROM attendance
+        WHERE mem_no=#{memNo} and att_date=#{attDate}
+    </select>
+
+    <delete id="attendCancel">
+        DELETE
+        FROM attendance
+        WHERE mem_no=#{memNo} and att_date=#{attDate}
+    </delete>
 </mapper>

@@ -11,4 +11,8 @@ public interface AuthMapper {
     MemberDto selectMemberById(String memId);
 
     int attend(@Param("memNo") int memNo, @Param("attDate") LocalDate attDate);
+
+    int getAttend(@Param("memNo") int memNo, @Param("attDate") LocalDate attDate);
+
+    int attendCancel(@Param("memNo") int memNo, @Param("attDate") LocalDate attDate);
 }
