@@ -26,4 +26,17 @@
         FROM attendance
         WHERE mem_no=#{memNo} and att_date=#{attDate}
     </delete>
+
+    <select id="getAllAtt" resultType="String">
+        SELECT m.mem_name
+        FROM attendance a
+        JOIN member m ON a.mem_no = m.mem_no
+        WHERE a.att_date = #{attDate}
+        ORDER BY m.mem_name;
+    </select>
+
+    <select id="getMemSize">
+        SELECT COUNT(mem_no)
+        FROM member
+    </select>
 </mapper>

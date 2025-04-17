@@ -1,3 +1,11 @@
+// ✅ DOM 로드 후 실행할 초기화 및 이벤트 바인딩
+document.addEventListener("DOMContentLoaded", function () {
+    initIdCheck();
+    initEmailHandler();
+    initFormSubmit();
+    initPasswordToggle();  // 👉 비밀번호 토글 추가!
+});
+
 // ✅ 중복 아이디 확인 함수 (전역에서 선언되어야 함)
 function checkDuplicateId() {
     const memId = document.getElementById("memId").value;
@@ -30,18 +38,20 @@ function checkDuplicateId() {
         });
 }
 
-// ✅ DOM 로드 후 실행할 초기화 및 이벤트 바인딩
-document.addEventListener("DOMContentLoaded", function () {
+function initIdCheck() {
     const memIdInput = document.getElementById("memId");
     const registerBtn = document.getElementById("registerBtn");
     const resultEl = document.getElementById("idCheckResult");
 
-    memIdInput.addEventListener("input", () => {
-        registerBtn.disabled = true;
-        resultEl.textContent = "";
-    });
+    if (memIdInput && registerBtn && resultEl) {
+        memIdInput.addEventListener("input", () => {
+            registerBtn.disabled = true;
+            resultEl.textContent = "";
+        });
+    }
+}
 
-    // 이메일 조합 처리
+function initEmailHandler() {
     const emailId = document.getElementById("memEmailId");
     const emailDomain = document.getElementById("memEmailDomain");
     const customDomain = document.getElementById("customDomain");
@@ -53,37 +63,52 @@ document.addEventListener("DOMContentLoaded", function () {
         fullEmail.value = id && domain ? `${id}@${domain}` : "";
     }
 
-    emailId.addEventListener("input", updateFullEmail);
-    emailDomain.addEventListener("change", () => {
-        if (emailDomain.value === "custom") {
-            customDomain.style.display = "inline-block";
-        } else {
-            customDomain.style.display = "none";
-        }
-        updateFullEmail();
-    });
-    customDomain.addEventListener("input", updateFullEmail);
-});
+    if (emailId && emailDomain && customDomain && fullEmail) {
+        emailId.addEventListener("input", updateFullEmail);
+        emailDomain.addEventListener("change", () => {
+            customDomain.style.display = emailDomain.value === "custom" ? "inline-block" : "none";
+            updateFullEmail();
+        });
+        customDomain.addEventListener("input", updateFullEmail);
+    }
+}
 
-document.addEventListener("DOMContentLoaded", function () {
+function initFormSubmit() {
     const form = document.getElementById("registerForm");
     const emailId = document.getElementById("memEmailId");
     const emailDomain = document.getElementById("memEmailDomain");
     const customDomain = document.getElementById("customDomain");
     const fullEmail = document.getElementById("memEmail");
 
-    form.addEventListener("submit", function (e) {
-        const id = emailId.value.trim();
-        const isCustom = emailDomain.value === "custom";
-        const domain = isCustom ? customDomain.value.trim() : emailDomain.value;
+    if (form && emailId && emailDomain && customDomain && fullEmail) {
+        form.addEventListener("submit", function (e) {
+            const id = emailId.value.trim();
+            const isCustom = emailDomain.value === "custom";
+            const domain = isCustom ? customDomain.value.trim() : emailDomain.value;
 
-        // 직접입력인데 빈칸이거나, 앞부분(id)이 없으면 막기
-        if (!id || !domain || (isCustom && customDomain.value.trim() === "")) {
-            e.preventDefault();
-            alert("이메일을 정확히 입력해주세요.");
-            return;
-        }
+            if (!id || !domain || (isCustom && customDomain.value.trim() === "")) {
+                e.preventDefault();
+                alert("이메일을 정확히 입력해주세요.");
+                return;
+            }
 
-        fullEmail.value = `${id}@${domain}`;
-    });
-});
+            fullEmail.value = `${id}@${domain}`;
+        });
+    }
+}
+
+function initPasswordToggle() {
+    const togglePassword = document.getElementById("RtogglePassword");
+    const passwordField = document.getElementById("memPw");
+    const eyeIcon = document.getElementById("ReyeIcon");
+
+    if (togglePassword && passwordField && eyeIcon) {
+        togglePassword.addEventListener("click", function () {
+            const isHidden = passwordField.type === "password";
+            passwordField.type = isHidden ? "text" : "password";
+
+            eyeIcon.classList.toggle("fa-eye");
+            eyeIcon.classList.toggle("fa-eye-slash");
+        });
+    }
+}

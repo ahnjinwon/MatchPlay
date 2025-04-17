@@ -10,19 +10,21 @@
 <body>
     <div layout:fragment="content">
         <div sec:authorize="!isAuthenticated()">
-            <h1>로그인 이전</h1>
+            <h1 align="center">🏸 OO클럽에 오신걸 환영합니다. 🏸</h1>
             <p>홍보 포스터? 머이런거</p>
         </div>
         <div sec:authorize="isAuthenticated()">
-            <p>main</p>
-            <p>login complete!</p>
-            <th:block sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                <a>관리자님 환영합니다</a>
-            </th:block>
-            <th:block sec:authorize="hasAnyAuthority('ROLE_USER')">
-                <a>사용자님 환영합니다</a>
-            </th:block>
-            <p>오늘 회원들 출석현황</p>
+            <div>
+                <p>오늘 회원들 출석현황 : <span th:text="${att_size}"></span>/<span th:text="${mem_size}"></span>명</p>
+                <div class="d-flex flex-wrap justify-content-start">
+                    <div th:each="att : ${all_att}"
+                         class="text-center border rounded p-2 m-1"
+                         style="width: 90px;">
+                        <span th:text="${att}"></span>
+                    </div>
+                </div>
+            </div>
+            <br>
             <p>코트 이용현황</p>
             <div th:if="${att}">
                 <button id="attendCancelButton" type="button" class="btn btn-primary btn-sm">출석 취소</button>

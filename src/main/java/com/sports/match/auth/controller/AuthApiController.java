@@ -1,4 +1,4 @@
-package com.sports.match.auth;
+package com.sports.match.auth.controller;
 
 import com.sports.match.auth.service.AuthService;
 import com.sports.match.config.security.CustomUserDetails;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth/api")
 @RequiredArgsConstructor
 public class AuthApiController  {
     private final AuthService authService;
@@ -27,4 +27,4 @@ public class AuthApiController  {
         boolean result = authService.attendCancel(userDetails.getMemNo());
         return  result ? 1 : 0;
     }
-}//출석체크 db 생성, 본인 출석 여부 불러와서 메인에 자동 적용, 출석하기 활성화, 출석 통계 적용, 출석완료하면 출석취소로 변경 및 적용
+}

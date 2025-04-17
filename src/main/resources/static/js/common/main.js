@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         attendButton.addEventListener('click', function(event) {
             event.preventDefault();  // 페이지 이동 막기
 
-            fetch('/auth/attend', {
+            fetch('/auth/api/attend', {
                 method: 'GET'
             })
             .then(response => response.text())  // 숫자니까 text로 받음
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         attendCancelButton.addEventListener('click', function(event) {
             event.preventDefault();  // 페이지 이동 막기
 
-            fetch('/auth/attendCancel', {
+            fetch('/auth/api/attendCancel', {
                 method: 'GET'
             })
             .then(response => response.text())  // 숫자니까 text로 받음

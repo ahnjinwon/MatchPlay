@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Mapper
 public interface AuthMapper {
@@ -15,4 +16,8 @@ public interface AuthMapper {
     int getAttend(@Param("memNo") int memNo, @Param("attDate") LocalDate attDate);
 
     int attendCancel(@Param("memNo") int memNo, @Param("attDate") LocalDate attDate);
+
+    List<String> getAllAtt(LocalDate attDate);
+
+    int getMemSize();
 }

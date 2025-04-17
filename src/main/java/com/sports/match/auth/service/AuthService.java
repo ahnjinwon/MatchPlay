@@ -6,6 +6,7 @@ import org.apache.ibatis.binding.BindingException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,15 @@ public class AuthService {
     public boolean attendCancel(int memNo) {
         int result = authMapper.attendCancel(memNo, attDate);
         return result>0;
+    }
+
+    public List<String> getAllAtt() {
+        List<String> allAtt = authMapper.getAllAtt(attDate);
+        System.out.println(allAtt.toString());
+        return allAtt;
+    }
+
+    public int getMemSize() {
+        return authMapper.getMemSize();
     }
 }
