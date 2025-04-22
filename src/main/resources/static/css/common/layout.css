@@ -1,0 +1,22 @@
+.nav-link:hover {
+    color: #007bff; /* 텍스트 색상 변경 */
+    background-color: rgba(0, 123, 255, 0.1); /* 배경색 변경 */
+    border-radius: 5px; /* 배경이 둥글게 */
+}
+
+/* 탭 사이 간격 증가 */
+.nav-item {
+    margin-right: 50px; /* 각 항목 간격을 20px로 설정 */
+}
+
+/* 버튼 호버 효과 */
+.btn-outline-secondary:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}

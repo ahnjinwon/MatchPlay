@@ -14,8 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (parseInt(data) === 1) {
                     alert('출석 완료');
+                    location.reload();
                 } else {
                     alert('이미 출석하였습니다.');
+                    location.reload();
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -34,8 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (parseInt(data) === 1) {
                     alert('출석 취소 완료');
+                    location.reload();
                 } else {
                     alert('이미 취소하였습니다.');
+                    location.reload();
                 }
             })
             .catch(error => console.error('Error:', error));

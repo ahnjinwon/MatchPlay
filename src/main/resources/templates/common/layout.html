@@ -21,51 +21,59 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="css/common/layout.css">
 </head>
 <body>
-<header class="bg-light py-3 border-bottom">
-    <div class="container">
-        <!--로그인 이후-->
-        <div class="row align-items-center justify-content-end" sec:authorize="isAuthenticated()">
-            <div class="col-md-7 d-flex justify-content-end align-items-center gap-2">
-                <!-- 유저 이름 표시 -->
-                <span class="user-name" style="font-size: 16px; margin-right: 15px;">
-                    안녕하세요, <span th:text="${#authentication.principal.memName}">유저이름</span>님
-                </span>
-                <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/member/mypage}">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">마이페이지</button>
-                </a>
-                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminpage}">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">관리자페이지</button>
-                </a>
-                <a th:href="@{/login/logout}">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 130px; height: 50px;">로그아웃</button>
-                </a>
-            </div>
+<header class="bg-light border-bottom py-3" style="position: relative;">
+    <div class="container d-flex align-items-center justify-content-end">
+
+        <!-- 네비게이션 중앙 고정 -->
+        <nav class="navbar-custom mx-auto">
+            <ul class="nav d-flex gap-4">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/match/main}" style="font-weight: 600; font-size: 20px; color: #333;">Match 🏸</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/community/main}" style="font-weight: 600; font-size: 20px; color: #333;">커뮤니티 👀</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/statistics/main}" style="font-weight: 600; font-size: 20px; color: #333;">통계 📈</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 오른쪽 로그인 or 유저 -->
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2 ms-auto">
+            <span style="font-size: 16px;">
+                안녕하세요, <span th:text="${#authentication.principal.memName}">유저이름</span>님
+            </span>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/member/mypage}">
+                <button class="btn btn-outline-secondary btn-sm" style="width: 130px;">마이페이지</button>
+            </a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/adminpage}">
+                <button class="btn btn-outline-secondary btn-sm" style="width: 130px;">관리자페이지</button>
+            </a>
+            <a th:href="@{/login/logout}">
+                <button class="btn btn-outline-secondary btn-sm" style="width: 130px;">로그아웃</button>
+            </a>
         </div>
-        <!--로그인 이전-->
-        <div class="row align-items-center justify-content-end" sec:authorize="isAnonymous()">
-            <div class="col-md-7 d-flex justify-content-end align-items-center gap-2">
-                <form action="/login/signin" method="post" class="d-flex gap-2">
-                    <input name="username" class="form-control form-control-sm" placeholder="아이디" required style="height: 50px;">
-                    <div class="input-group" style="height: 50px;">
-                        <input name="password"
-                               id="password"
-                               class="form-control form-control-sm"
-                               type="password"
-                               placeholder="비밀번호"
-                               required
-                               style="height: 50px;">
-                        <button class="btn btn-outline-secondary btn-sm" type="button" id="togglePassword" style="height: 50px;">
+
+        <div sec:authorize="isAnonymous()" class="d-flex align-items-center gap-2 ms-auto">
+            <form action="/login/signin" method="post" class="d-flex gap-2">
+                <input name="username" class="form-control form-control-sm" placeholder="아이디" required style="width: 180px; border-radius: 25px;">
+                <div class="input-group" style="width: 200px;">
+                    <input name="password" id="password" class="form-control form-control-sm" type="password" placeholder="비밀번호" required style="border-radius: 25px;">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary btn-sm" type="button" id="togglePassword" style="border-radius: 25px;">
                             <i class="fa-solid fa-eye" id="eyeIcon"></i>
                         </button>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm" style="width: 200px;">로그인</button>
-                </form>
-                <a th:href="@{/login/register}">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" style="width: 100px; height:50px;">회원가입</button>
-                </a>
-            </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 100px; border-radius: 25px;">로그인</button>
+            </form>
+            <a th:href="@{/login/register}">
+                <button class="btn btn-outline-secondary btn-sm" style="width: 100px; border-radius: 25px;">회원가입</button>
+            </a>
         </div>
     </div>
 </header>
