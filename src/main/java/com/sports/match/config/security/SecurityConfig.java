@@ -29,14 +29,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/failure?error=access")) // 인증되지 않은 접근 시 /login/failure?error=true로 리다이렉트
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/register?error=access")) // 인증되지 않은 접근 시 /login/failure?error=true로 리다이렉트
                         .accessDeniedHandler(new AccessDeniedHandlerImpl()) // 권한이 없는 접근 시 기본 처리
                 )
                 .formLogin(login -> login
                         .loginProcessingUrl("/login/signin")
                         .defaultSuccessUrl("/", true)
                         .failureHandler((request, response, exception) -> {
-                            response.sendRedirect("/login/failure?error=true");
+                            response.sendRedirect("/login/register?error=true");
                         })
                 )
                 .userDetailsService(customUserDetailsService)

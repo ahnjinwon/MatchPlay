@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initEmailHandler();
     initFormSubmit();
     initPasswordToggle();  // 👉 비밀번호 토글 추가!
+    loginFail();
 });
 
 // ✅ 중복 아이디 확인 함수 (전역에서 선언되어야 함)
@@ -111,4 +112,26 @@ function initPasswordToggle() {
             eyeIcon.classList.toggle("fa-eye-slash");
         });
     }
+}
+
+function loginFail(){
+        // 페이지 로드 시 URL 파라미터에서 error=true를 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("error") === "true") {
+            alert("로그인 실패! 다시 시도해주세요.");
+
+            // URL에서 error 파라미터 제거
+            urlParams.delete('error');
+            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+            window.history.replaceState({}, '', newUrl);  // URL에서 error 파라미터 제거
+        }
+
+        if (urlParams.get("error") === "access") {
+            alert("로그인 이후 접근 가능합니다.");
+
+            // URL에서 error 파라미터 제거
+            urlParams.delete('error');
+            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+            window.history.replaceState({}, '', newUrl);  // URL에서 error 파라미터 제거
+        }
 }
