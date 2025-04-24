@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sports.match.mypage.model.dao.MyPageDao">
+    <select id="getMyInfo" resultType="com.sports.match.mypage.model.dto.MyInfoDto">
+        SELECT m.*, a.att_date
+        FROM member m
+        JOIN attendance a ON a.mem_no = m.mem_no
+        WHERE m.mem_no=#{memNo}
+        ORDER BY a.att_date desc
+        LIMIT 1;
+    </select>
+</mapper>

@@ -15,7 +15,7 @@
         </div>
         <div sec:authorize="isAuthenticated()">
             <div>
-                <p>오늘 회원들 출석현황 : <span th:text="${att_size}"></span>/<span th:text="${mem_size}"></span>명</p>
+                <p>금일 출석 목록 : <span th:text="${att_size}"></span>/<span th:text="${mem_size}"></span>명</p>
                 <div class="d-flex flex-wrap justify-content-start">
                     <div th:each="att : ${all_att}"
                          class="text-center border rounded p-2 m-1"
