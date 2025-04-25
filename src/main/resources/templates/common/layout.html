@@ -80,7 +80,18 @@
 </header>
 
 <div class="container mt-4 d-flex">
-    <!-- 사이드바 (조건부로 표시) -->
+    <!-- 사이드바 (마이페이지) -->
+    <style>
+        .sidebar-link {
+            color: #333;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background-color: #e2e6ea;
+            color: #0d6efd;
+        }
+    </style>
     <div th:if="${showSidebar}" class="sidebar bg-light p-3 me-4 rounded shadow-sm" style="width: 220px;">
         <a href="/mypage/mainpage" class="text-decoration-none">
             <h5 class="mb-4 border-bottom pb-2 text-primary">
@@ -90,32 +101,20 @@
         <ul class="sideBar">
             <li class="mb-2">
                 <a href="/mypage/modify" class="text-decoration-none d-block px-2 py-1 rounded sidebar-link">
-                    <i class="bi bi-house-door me-2"></i>회원 정보 수정
+                    <i class="bi bi-person-lines-fill me-2"></i>회원 정보 수정
                 </a>
             </li>
             <li class="mb-2">
                 <a href="/mypage/changepw" class="text-decoration-none d-block px-2 py-1 rounded sidebar-link">
-                    <i class="bi bi-gear me-2"></i>비밀번호 변경
+                    <i class="bi bi-shield-lock me-2"></i>비밀번호 변경
                 </a>
             </li>
             <li class="mb-2">
                 <a href="/mypage/support" class="text-decoration-none d-block px-2 py-1 rounded sidebar-link">
-                    <i class="bi bi-box-arrow-right me-2"></i>관리자 문의
+                    <i class="bi bi-question-circle me-2"></i>관리자 문의
                 </a>
             </li>
         </ul>
-
-        <style>
-            .sidebar-link {
-                color: #333;
-                transition: background-color 0.2s, color 0.2s;
-            }
-
-            .sidebar-link:hover {
-                background-color: #e2e6ea;
-                color: #0d6efd;
-            }
-        </style>
     </div>
     <!-- 본문 콘텐츠 영역 -->
     <div class="content flex-grow-1" layout:fragment="content"></div>
