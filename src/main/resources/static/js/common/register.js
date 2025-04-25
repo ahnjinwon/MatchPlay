@@ -3,10 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
     initIdCheck();
     initEmailHandler();
     initFormSubmit();
-    initPasswordToggle();  // 👉 비밀번호 토글 추가!
+    initPasswordToggle();
     loginFail();
+    initPasswordMatchValidator();
+    updateRegisterButtonState();
 });
 
+let pwvalid = false;
+let idvalid = false;
 // ✅ 중복 아이디 확인 함수 (전역에서 선언되어야 함)
 function checkDuplicateId() {
     const memId = document.getElementById("memId").value;
@@ -24,19 +28,22 @@ function checkDuplicateId() {
             if (data.exists) {
                 resultEl.textContent = "이미 사용 중인 아이디입니다.";
                 resultEl.className = "text-danger";
-                registerBtn.disabled = true;
+                idvalid = false;
+                updateRegisterButtonState();
             } else {
                 resultEl.textContent = "사용 가능한 아이디입니다!";
                 resultEl.className = "text-success";
-                registerBtn.disabled = false;
+                idvalid = true;
+                updateRegisterButtonState();
             }
         })
         .catch(err => {
             alert("서버 오류가 발생했습니다.");
             console.error(err);
             resultEl.textContent = "";
-            registerBtn.disabled = true;
+            idvalid.disabled = true;
         });
+    updateRegisterButtonState();
 }
 
 function initIdCheck() {
@@ -46,8 +53,9 @@ function initIdCheck() {
 
     if (memIdInput && registerBtn && resultEl) {
         memIdInput.addEventListener("input", () => {
-            registerBtn.disabled = true;
+            idvalid = false;
             resultEl.textContent = "";
+            updateRegisterButtonState();
         });
     }
 }
@@ -112,6 +120,20 @@ function initPasswordToggle() {
             eyeIcon.classList.toggle("fa-eye-slash");
         });
     }
+
+    const togglePasswordCheck = document.getElementById("togglePasswordCheck");
+        const passwordCheckField = document.getElementById("memPwCheck");
+        const eyeIconCheck = document.getElementById("eyeIconCheck");
+
+        if (togglePasswordCheck && passwordCheckField && eyeIconCheck) {
+            togglePasswordCheck.addEventListener("click", function () {
+                const isHiddenCheck = passwordCheckField.type === "password";
+                passwordCheckField.type = isHiddenCheck ? "text" : "password";
+
+                eyeIconCheck.classList.toggle("fa-eye");
+                eyeIconCheck.classList.toggle("fa-eye-slash");
+            });
+        }
 }
 
 function loginFail(){
@@ -135,3 +157,40 @@ function loginFail(){
             window.history.replaceState({}, '', newUrl);  // URL에서 error 파라미터 제거
         }
 }
+
+function initPasswordMatchValidator(pwId = "memPw", pwCheckId = "memPwCheck", btnId = "registerBtn") {
+    const pwInput = document.getElementById(pwId);
+    const pwCheckInput = document.getElementById(pwCheckId);
+    const registerBtn = document.getElementById(btnId);
+
+    if (!pwInput || !pwCheckInput || !registerBtn) {
+        console.warn("비밀번호 필드 또는 버튼 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    function validatePasswords() {
+        const pw = pwInput.value;
+        const pwCheck = pwCheckInput.value;
+
+        pwvalid = pw && pwCheck && pw === pwCheck;
+
+        pwCheckInput.classList.remove("is-valid", "is-invalid");
+        if (pwCheck.length > 0) {
+            pwCheckInput.classList.add(pwvalid ? "is-valid" : "is-invalid");
+        }
+        updateRegisterButtonState();
+    }
+
+    pwInput.addEventListener("input", validatePasswords);
+    pwCheckInput.addEventListener("input", validatePasswords);
+
+    // 초기 상태 점검
+    validatePasswords();
+}
+
+function updateRegisterButtonState() {
+        const registerBtn = document.getElementById("registerBtn");
+        console.log("pw: "+pwvalid);
+        console.log("id: "+idvalid);
+        registerBtn.disabled = !(pwvalid && idvalid);
+    }
