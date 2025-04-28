@@ -1,0 +1,26 @@
+//회원 정보
+CREATE TABLE member (
+  mem_no INT AUTO_INCREMENT PRIMARY KEY,
+  mem_id VARCHAR(100) NOT NULL,
+  mem_pw VARCHAR(255) NOT NULL,
+  mem_name VARCHAR(100) NOT NULL,
+  mem_tel VARCHAR(50),
+  mem_email VARCHAR(150),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  mem_role VARCHAR(20) DEFAULT 'ROLE_USER',
+  grade VARCHAR(20),
+  approved INT DEFAULT 0,
+  profile_img VARCHAR(255) DEFAULT 'default_profile.png'
+);
+
+//출석 정보
+CREATE TABLE attendance (
+  att_id INT AUTO_INCREMENT PRIMARY KEY,             -- 출석 고유번호
+  mem_no INT NOT NULL,                               -- 회원 고유번호 (FK)
+  att_date DATE NOT NULL,                            -- 출석 날짜 (출석 기준용)
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- 출석을 누른 실제 시간 기록
+  CONSTRAINT fk_member_attendance
+    FOREIGN KEY (mem_no) REFERENCES member(mem_no)
+    ON DELETE CASCADE,                               -- 회원 삭제 시 출석 기록도 삭제
+  CONSTRAINT unique_attendance UNIQUE (mem_no, att_date)  -- 같은 날 중복 출석 방지
+);

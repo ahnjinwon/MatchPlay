@@ -3,6 +3,7 @@ package com.sports.match.mypage.controller;
 import com.sports.match.mypage.model.dto.MyInfoDto;
 import com.sports.match.mypage.service.MyPageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,5 +20,13 @@ public class MyPageController {
         model.addAttribute("showSidebar",true);
         model.addAttribute("myInfo",myInfoDto);
         return "/mypage/mainPage";
+    }
+
+    @GetMapping("updateProfile")
+    public String updateProfile(Model model, Authentication authentication){
+        MyInfoDto myInfoDto = mypageService.getMyInfo();
+        model.addAttribute("showSidebar",true);
+        model.addAttribute("myInfo",myInfoDto);
+        return "/mypage/updateProfile";
     }
 }
