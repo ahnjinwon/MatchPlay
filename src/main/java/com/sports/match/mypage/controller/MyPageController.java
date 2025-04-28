@@ -37,4 +37,9 @@ public class MyPageController {
         int result=mypageService.updateProfile(myInfoDto);
         return "redirect:/mypage/mainpage";
     }
+
+    @GetMapping("updateCancel")
+    public String updateCancel(){
+        return "redirect:/mypage/mainpage";
+    }
 }
