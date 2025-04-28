@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
@@ -28,5 +29,12 @@ public class MyPageController {
         model.addAttribute("showSidebar",true);
         model.addAttribute("myInfo",myInfoDto);
         return "/mypage/updateProfile";
+    }
+
+    @PostMapping("updateProfile")
+    public String updateProfile(MyInfoDto myInfoDto){
+        System.out.println(myInfoDto.toString());
+        int result=mypageService.updateProfile(myInfoDto);
+        return "redirect:/mypage/mainpage";
     }
 }

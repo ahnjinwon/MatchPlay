@@ -11,4 +11,14 @@
         ORDER BY a.att_date desc
         LIMIT 1;
     </select>
+
+    <update id="updateProfile" parameterType="com.sports.match.mypage.model.dto.MyInfoDto">
+        UPDATE MEMBER
+        SET mem_name = #{memName},
+            mem_email = #{memEmail},
+            mem_tel = #{memTel},
+            grade = #{grade}
+        WHERE
+            mem_id = #{memId}
+    </update>
 </mapper>

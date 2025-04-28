@@ -18,4 +18,9 @@ public class MyPageService {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         return myPageDao.getMyInfo(userDetails.getMemNo());
     }
+
+    public int updateProfile(MyInfoDto myInfoDto) {
+        int result = myPageDao.updateProfile(myInfoDto);
+        return result;
+    }
 }
