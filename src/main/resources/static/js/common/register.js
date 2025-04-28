@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let pwvalid = false;
 let idvalid = false;
-// ✅ 중복 아이디 확인 함수 (전역에서 선언되어야 함)
+// 중복 아이디 확인 함수
 function checkDuplicateId() {
     const memId = document.getElementById("memId").value;
     const resultEl = document.getElementById("idCheckResult");
@@ -45,7 +45,7 @@ function checkDuplicateId() {
         });
     updateRegisterButtonState();
 }
-
+//아이디값 변경 시 회원가입 비활성화
 function initIdCheck() {
     const memIdInput = document.getElementById("memId");
     const registerBtn = document.getElementById("registerBtn");
@@ -59,7 +59,7 @@ function initIdCheck() {
         });
     }
 }
-
+//이메일 형식 확인
 function initEmailHandler() {
     const emailId = document.getElementById("memEmailId");
     const emailDomain = document.getElementById("memEmailDomain");
@@ -81,7 +81,7 @@ function initEmailHandler() {
         customDomain.addEventListener("input", updateFullEmail);
     }
 }
-
+//이메일 형식 확인
 function initFormSubmit() {
     const form = document.getElementById("registerForm");
     const emailId = document.getElementById("memEmailId");
@@ -105,7 +105,7 @@ function initFormSubmit() {
         });
     }
 }
-
+//비밀번호 보이기-숨기기
 function initPasswordToggle() {
     const togglePassword = document.getElementById("RtogglePassword");
     const passwordField = document.getElementById("memPw");
@@ -135,7 +135,7 @@ function initPasswordToggle() {
             });
         }
 }
-
+//페이지 접근시 alert
 function loginFail(){
         // 페이지 로드 시 URL 파라미터에서 error=true를 확인
         const urlParams = new URLSearchParams(window.location.search);
@@ -157,7 +157,7 @@ function loginFail(){
             window.history.replaceState({}, '', newUrl);  // URL에서 error 파라미터 제거
         }
 }
-
+//비밀번호 관련 동작
 function initPasswordMatchValidator(pwId = "memPw", pwCheckId = "memPwCheck", btnId = "registerBtn") {
     const pwInput = document.getElementById(pwId);
     const pwCheckInput = document.getElementById(pwCheckId);
@@ -171,8 +171,17 @@ function initPasswordMatchValidator(pwId = "memPw", pwCheckId = "memPwCheck", bt
     function validatePasswords() {
         const pw = pwInput.value;
         const pwCheck = pwCheckInput.value;
+        let pwreg = false;
 
-        pwvalid = pw && pwCheck && pw === pwCheck;
+        pwInput.classList.remove("is-valid", "is-invalid");
+        if (pw.length >= 8 && /[!@#$%^&*(),.?":{}|<>]/.test(pw) && /\d/.test(pw)) {
+            pwInput.classList.add("is-valid");
+            pwreg = true;
+        }else if(pw.length > 0) {
+            pwInput.classList.add("is-invalid");
+            pwreg = false;
+        }
+        pwvalid = pw && pwCheck && pwreg && pw === pwCheck;
 
         pwCheckInput.classList.remove("is-valid", "is-invalid");
         if (pwCheck.length > 0) {
@@ -187,7 +196,7 @@ function initPasswordMatchValidator(pwId = "memPw", pwCheckId = "memPwCheck", bt
     // 초기 상태 점검
     validatePasswords();
 }
-
+//회원가입 버튼 활성화 확인
 function updateRegisterButtonState() {
         const registerBtn = document.getElementById("registerBtn");
         console.log("pw: "+pwvalid);

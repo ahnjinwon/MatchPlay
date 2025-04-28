@@ -21,7 +21,12 @@
                     <small id="idCheckResult" class="text-muted"></small>
                 </div>
                 <div class="mb-3">
-                    <label for="memPw" class="form-label">비밀번호</label>
+                    <div class="d-flex align-items-center mb-1">
+                        <label for="memPw" class="form-label mb-0 me-2">비밀번호</label>
+                        <small class="text-muted" style="font-size: 0.8em;">
+                            (특수문자 포함 8자 이상)
+                        </small>
+                    </div>
                     <div class="input-group">
                         <input name="memPw" id="memPw" type="password" class="form-control" placeholder="비밀번호 입력" required>
                         <button class="btn btn-outline-secondary btn-sm" type="button" id="RtogglePassword">
