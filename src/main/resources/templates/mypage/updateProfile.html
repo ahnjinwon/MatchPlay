@@ -23,7 +23,8 @@
             </li>
             <li class="list-group-item">
                 <strong>이메일 :</strong>
-                <input type="email" name="memEmail" th:value="${myInfo.memEmail}">
+                <input type="email"  id="email" name="memEmail" th:value="${myInfo.memEmail}" disabled>
+                <button type="button" class="btn btn-primary sm" id="changeEmail">이메일 변경</button>
             </li>
             <li class="list-group-item">
                 <strong>전화번호 :</strong>

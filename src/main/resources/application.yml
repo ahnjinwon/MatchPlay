@@ -3,5 +3,9 @@ spring:
     name: match
   config:
     import: database.yml
+
 server:
   port: 8099
+  servlet:
+    session:
+      timeout: 30m
