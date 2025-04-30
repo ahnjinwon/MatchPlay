@@ -12,6 +12,7 @@ public class CustomUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final String memName;
+    private final String memEmail;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(MemberDto memberDto) {
@@ -19,7 +20,12 @@ public class CustomUserDetails implements UserDetails {
         this.username = memberDto.getMemId();
         this.password = memberDto.getMemPw();
         this.memName = memberDto.getMemName();
+        this.memEmail = memberDto.getMemEmail();
         this.authorities = AuthorityUtils.createAuthorityList(memberDto.getMemRole());
+    }
+
+    public String getMemEmail() {
+        return memEmail;
     }
 
     public int getMemNo() {

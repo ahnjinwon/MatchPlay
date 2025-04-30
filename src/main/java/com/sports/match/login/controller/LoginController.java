@@ -39,4 +39,12 @@ public class LoginController {
         System.out.println("실패!!");
         return "/common/failure";
     }
+
+    @GetMapping("/checkEmail")
+    @ResponseBody
+    public Map<String, Integer> checkEmail(@RequestParam("memEmail") String memEmail){
+        int code = loginService.getCode(memEmail);
+        String key = "key"+code;
+        return Map.of(key,code);
+    }
 }

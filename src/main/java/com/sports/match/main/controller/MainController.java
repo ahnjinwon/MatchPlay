@@ -20,10 +20,12 @@ public class MainController {
     public String main(Authentication authentication, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            //authService.mailtest(userDetails.getMemEmail());
             boolean result = authService.getAttend(userDetails.getMemNo());
             model.addAttribute("att",result);
         }
         List<String> allAtt = authService.getAllAtt();
+        authService.redistest();
         int memSize = authService.getMemSize();
         model.addAttribute("all_att",allAtt);
         model.addAttribute("att_size",allAtt.size());
