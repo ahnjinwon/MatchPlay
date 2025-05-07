@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
     loginFail();
     initPasswordMatchValidator();
     updateRegisterButtonState();
+    sendCode();
 });
 
 let pwvalid = false;
 let idvalid = false;
+let codeValid = false;
 // 중복 아이디 확인 함수
 function checkDuplicateId() {
     const memId = document.getElementById("memId").value;
@@ -198,8 +200,77 @@ function initPasswordMatchValidator(pwId = "memPw", pwCheckId = "memPwCheck", bt
 }
 //회원가입 버튼 활성화 확인
 function updateRegisterButtonState() {
-        const registerBtn = document.getElementById("registerBtn");
-        console.log("pw: "+pwvalid);
-        console.log("id: "+idvalid);
-        registerBtn.disabled = !(pwvalid && idvalid);
+    const registerBtn = document.getElementById("registerBtn");
+    console.log("pw: "+pwvalid);
+    console.log("id: "+idvalid);
+    registerBtn.disabled = !(pwvalid && idvalid && codeValid);
+}
+
+function sendCode() {
+    const sendCodeBtn = document.getElementById("sendCode");
+    const memEmailId = document.getElementById("memEmailId");
+    const memEmailDomain = document.getElementById("memEmailDomain");
+    const codeInput = document.getElementById("codeInput");
+    const registerCodeBtn = document.getElementById("registerCode");
+    const reSendBtn = document.getElementById("reSend");
+    const codeGroup = document.getElementById("codeGroup");
+
+    async function sendCodefc() {
+        const memEmail = memEmailId.value + "@" + memEmailDomain.value;
+        console.log("Sending code to:", memEmail);
+        sendCodeBtn.style.display = "none";
+        codeInput.style.display = "block";
+        registerCodeBtn.style.display = "inline-block";
+        reSendBtn.style.display = "inline-block";
+        codeGroup.style.display = "flex";
+
+        try {
+            const response = await fetch(`/login/checkEmail?memEmail=${memEmail}`)
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
     }
+
+    sendCodeBtn.addEventListener("click", sendCodefc);
+    reSendBtn.addEventListener("click", sendCodefc);
+}
+//인증번호 검증과정
+document.getElementById("registerCode").addEventListener("click", async function(){
+    const memEmailId = document.getElementById("memEmailId");
+    const memEmailDomain = document.getElementById("memEmailDomain");
+    const registerCode = document.getElementById("registerCode");
+    const reSend = document.getElementById("reSend");
+    const key = document.getElementById("codeInput");
+
+    try {
+
+        const memEmail = memEmailId.value + "@" + memEmailDomain.value;
+        const response = await fetch(`/login/checkKey?key=${encodeURIComponent(key.value)}&memEmail=${encodeURIComponent(memEmail)}`);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        codeValid = await response.json();
+        console.log("API Response:", codeValid);
+        key.classList.remove("is-valid", "is-invalid");
+        if(codeValid){
+            memEmailId.disabled=true;
+            memEmailDomain.disabled=true;
+            key.disabled=true;
+            registerCode.style.display = "none";
+            reSend.style.display = "none";
+            key.classList.add("is-valid");
+        }else {
+            key.classList.add("is-invalid");
+            alert("인증번호를 다시 확인해주세요.")
+        }
+        updateRegisterButtonState();
+
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
+});

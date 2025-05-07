@@ -44,7 +44,12 @@ public class LoginController {
     @ResponseBody
     public Map<String, Integer> checkEmail(@RequestParam("memEmail") String memEmail){
         int code = loginService.getCode(memEmail);
-        String key = "key"+code;
-        return Map.of(key,code);
+        return Map.of(memEmail,code);
+    }
+
+    @GetMapping("/checkKey")
+    @ResponseBody
+    public boolean checkKey(@RequestParam("key") String key, @RequestParam("memEmail") String memEmail){
+        return loginService.checkKey(key,memEmail);
     }
 }

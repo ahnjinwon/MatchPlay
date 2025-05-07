@@ -2,6 +2,8 @@ package com.sports.match.login.service;
 
 import com.sports.match.login.model.dao.LoginDao;
 import com.sports.match.login.model.dto.RegistDto;
+import com.sports.match.util.EmailUtil;
+import com.sports.match.util.model.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -13,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class LoginService {
     private final LoginDao loginDao;
-    private final RedisTemplate<String, Integer> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final EmailUtil emailUtil;
 
     public void registMember(RegistDto registDto) {
         loginDao.registMember(registDto);
@@ -25,10 +28,34 @@ public class LoginService {
 
     public int getCode(String memEmail) {
         int code = (int)(Math.random() * 900000) + 100000;
-        ValueOperations<String, Integer> valueOperations = redisTemplate.opsForValue();
-        String key = "key"+code;
-        valueOperations.set(key,code);
-        redisTemplate.expire(key,180, TimeUnit.SECONDS);
+
+        try {
+            ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+            String key = memEmail;
+            System.out.println("Generated Key: " + memEmail);
+            valueOperations.set(key, String.valueOf(code));
+            Email email = new Email();
+            email.setMailTitle("MatchPlay 인증번호");
+            email.setReceiveAddress(memEmail);
+            email.setMailContent("인증번호: "+code);
+            emailUtil.sendEmail(email);
+            redisTemplate.expire(key,180, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return code;
+    }
+
+    public boolean checkKey(String key, String memEmail) {
+        try{
+            String realKey = redisTemplate.opsForValue().get(memEmail);
+            return realKey.equals(key);
+        } catch (NullPointerException e){
+            return false;
+        } catch (Exception e){
+            e.printStackTrace();
+            return  false;
+        }
     }
 }

@@ -52,9 +52,12 @@
                     <input name="memTel" id="memTel" class="form-control" placeholder="01012341234" required>
                 </div>
                 <div class="mb-3">
-                    <label for="memEmail" class="form-label">E-Mail</label>
+                    <div class="d-flex align-items-center mb-1">
+                        <label for="memEmail" class="form-label me-2 mb-0">E-Mail</label>
+                        <button type="button" class="btn btn-primary btn-sm" id="sendCode">인증번호 발송</button>
+                    </div>
 
-                    <div class="input-group">
+                    <div class="input-group mb-2">
                         <!-- 이메일 앞부분 입력 -->
                         <input type="text" id="memEmailId" name="memEmailId" class="form-control" placeholder="E-mail" required>
 
@@ -72,10 +75,18 @@
 
                         <!-- 직접 도메인 입력 필드 (기본은 숨김) -->
                         <input type="text" id="customDomain" class="form-control" placeholder="example.com" style="display: none;">
+
                     </div>
 
                     <!-- 숨겨진 전체 이메일 전달용 input -->
                     <input type="hidden" id="memEmail" name="memEmail">
+
+                    <!-- 한 줄로 배치되는 인증 입력라인 -->
+                    <div class="input-group" style="display: none;" id="codeGroup">
+                        <input type="text" id="codeInput" class="form-control" placeholder="인증번호 입력">
+                        <button type="button" class="btn btn-primary" id="registerCode">인증</button>
+                        <button type="button" class="btn btn-secondary" id="reSend">재전송</button>
+                    </div>
                 </div>
                 <div class="mb-4">
                     <label for="grade" class="form-label">레벨</label>
