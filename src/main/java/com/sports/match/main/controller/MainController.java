@@ -25,7 +25,6 @@ public class MainController {
             model.addAttribute("att",result);
         }
         List<String> allAtt = authService.getAllAtt();
-        authService.redistest();
         int memSize = authService.getMemSize();
         model.addAttribute("all_att",allAtt);
         model.addAttribute("att_size",allAtt.size());

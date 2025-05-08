@@ -23,8 +23,14 @@
             </li>
             <li class="list-group-item">
                 <strong>이메일 :</strong>
-                <input type="email"  id="email" name="memEmail" th:value="${myInfo.memEmail}" disabled>
+                <input type="email"  id="memEmail" name="memEmail" th:value="${myInfo.memEmail}" disabled>
                 <button type="button" class="btn btn-primary sm" id="changeEmail">이메일 변경</button>
+                <button type="button" class="btn btn-primary sm" id="registCode" hidden="true">인증번호 전송</button>
+                <div class="input-group" style="display: none;" id="codeGroup">
+                    <input type="text" id="inputCode" class="form-control" placeholder="인증번호 입력">
+                    <button type="button" class="btn btn-primary" id="registerCode">인증</button>
+                    <button type="button" class="btn btn-secondary" id="reSend">재전송</button>
+                </div>
             </li>
             <li class="list-group-item">
                 <strong>전화번호 :</strong>

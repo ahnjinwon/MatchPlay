@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,5 +39,17 @@ public class MyPageController {
     @GetMapping("updateCancel")
     public String updateCancel(){
         return "redirect:/mypage/mainpage";
+    }
+
+    @GetMapping("sendCode")
+    @ResponseBody
+    public boolean sendCode(@RequestParam("email") String email) {
+        return mypageService.sendCode(email);
+    }
+
+    @GetMapping("checkKey")
+    @ResponseBody
+    public boolean checkKey(@RequestParam("key") String key, @RequestParam("memEmail") String memEmail){
+        return mypageService.checkKey(key, memEmail);
     }
 }
