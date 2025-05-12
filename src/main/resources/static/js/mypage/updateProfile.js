@@ -44,7 +44,8 @@ function changeEmail(){
     if (changeEmailButton) {
         changeEmailButton.addEventListener('click', function() {
             if (confirm("이메일을 변경하시겠습니까?")) {
-                Email.disabled = false;
+                Email.readOnly = false;
+                Email.classList.remove('readonly-field');
                 submitButton.disabled = true;
                 changeEmailButton.style.display="none";
                 registCode.hidden=false;
@@ -97,6 +98,7 @@ document.getElementById("registerCode").addEventListener("click", async function
         key.classList.remove("is-valid", "is-invalid");
         if(codeValid){
             memEmail.readOnly=true;
+            memEmail.classList.add('readonly-field');
             key.disabled=true;
             registerCode.style.display = "none";
             reSend.style.display = "none";

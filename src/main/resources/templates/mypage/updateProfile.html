@@ -23,7 +23,7 @@
             </li>
             <li class="list-group-item">
                 <strong>이메일 :</strong>
-                <input type="email"  id="memEmail" name="memEmail" th:value="${myInfo.memEmail}" disabled>
+                <input type="email"  id="memEmail" name="memEmail" th:value="${myInfo.memEmail}" readonly class="readonly-field">
                 <button type="button" class="btn btn-primary sm" id="changeEmail">이메일 변경</button>
                 <button type="button" class="btn btn-primary sm" id="registCode" hidden="true">인증번호 전송</button>
                 <div class="input-group" style="display: none;" id="codeGroup">
@@ -60,6 +60,7 @@
         </div>
     </form>
     <script type="text/javascript" th:src="@{/js/mypage/updateProfile.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mypage/updateProfile.css}">
 </div>
 
 </body>
