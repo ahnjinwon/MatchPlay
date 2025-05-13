@@ -2,6 +2,7 @@ package com.sports.match.mypage.controller;
 
 import com.sports.match.mypage.model.dto.MyInfoDto;
 import com.sports.match.mypage.service.MyPageService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -76,5 +77,12 @@ public class MyPageController {
         model.addAttribute("showSidebar",true);
         return "/mypage/changePw";
     }
-    //아이콘 js 만들고 수정 메소드 추가하고 현재비밀번호 입력 responsebody로 바꿔서 js에서 받자 그게 편할듯 비밀변호 변경할때도 confirm
+
+    @PostMapping("changepw")
+    public  String changePw(Model model, @RequestParam("memPw") String memPw, HttpSession session){
+        MyInfoDto myInfoDto = mypageService.getMyInfo();
+        mypageService.changePw(memPw, myInfoDto.getMemNo());
+        session.invalidate();
+        return "redirect:/";
+    }
 }

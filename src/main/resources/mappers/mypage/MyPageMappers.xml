@@ -21,4 +21,12 @@
         WHERE
             mem_id = #{memId}
     </update>
+
+    <update id="changePw">
+        UPDATE MEMBER
+        SET
+            mem_pw = #{memPw}
+        WHERE
+            mem_no = #{memNo}
+    </update>
 </mapper>

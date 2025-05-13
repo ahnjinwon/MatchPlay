@@ -79,4 +79,10 @@ public class MyPageService {
             return 0;
         }
     }
+
+    public void changePw(String memPw, int memNo) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String cryptedpw = encoder.encode(memPw);
+        myPageDao.changePw(cryptedpw, memNo);
+    }
 }
