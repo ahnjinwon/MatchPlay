@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -64,6 +65,18 @@ public class MyPageService {
         } catch (Exception e){
             e.printStackTrace();
             return  false;
+        }
+    }
+
+    public int getPw(String memPw) {
+        String pw = getMyInfo().getMemPw();
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (encoder.matches(memPw, pw)) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

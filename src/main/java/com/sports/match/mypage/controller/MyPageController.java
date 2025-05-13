@@ -52,4 +52,29 @@ public class MyPageController {
     public boolean checkKey(@RequestParam("key") String key, @RequestParam("memEmail") String memEmail){
         return mypageService.checkKey(key, memEmail);
     }
+
+    @GetMapping("checkpw")
+    public String checkpw(Model model){
+        model.addAttribute("showSidebar",true);
+        return "/mypage/checkPw";
+    }
+
+    @PostMapping("checkpw")
+    @ResponseBody
+    public boolean getPw(Model model, @RequestParam("memPw") String memPw){
+        model.addAttribute("showSidebar",true);
+        System.out.println(memPw);
+        int result = mypageService.getPw(memPw);
+        if(result==1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+    @GetMapping("changepw")
+    public String changePw(Model model){
+        model.addAttribute("showSidebar",true);
+        return "/mypage/changePw";
+    }
+    //아이콘 js 만들고 수정 메소드 추가하고 현재비밀번호 입력 responsebody로 바꿔서 js에서 받자 그게 편할듯 비밀변호 변경할때도 confirm
 }
