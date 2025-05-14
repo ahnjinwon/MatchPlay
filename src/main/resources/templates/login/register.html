@@ -24,7 +24,7 @@
                     <div class="d-flex align-items-center mb-1">
                         <label for="memPw" class="form-label mb-0 me-2">비밀번호</label>
                         <small class="text-muted" style="font-size: 0.8em;">
-                            (특수문자 포함 8자 이상)
+                            (특수문자와 숫자를 포함한 8자 이상)
                         </small>
                     </div>
                     <div class="input-group">
@@ -64,6 +64,9 @@
                         <!-- @ 표시 -->
                         <span class="input-group-text">@</span>
 
+                        <!-- 직접 도메인 입력 필드 (기본은 숨김) -->
+                        <input type="text" id="customDomain" class="form-control" placeholder="example.com" style="display: none;">
+
                         <!-- 도메인 선택 -->
                         <select id="memEmailDomain" name="memEmailDomain" class="form-select" required>
                             <option value="gmail.com">gmail.com</option>
@@ -72,10 +75,6 @@
                             <option value="nate.com">nate.com</option>
                             <option value="custom">직접 입력</option>
                         </select>
-
-                        <!-- 직접 도메인 입력 필드 (기본은 숨김) -->
-                        <input type="text" id="customDomain" class="form-control" placeholder="example.com" style="display: none;">
-
                     </div>
 
                     <!-- 숨겨진 전체 이메일 전달용 input -->
@@ -102,7 +101,7 @@
             </form>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/common/register.js}"></script>
+    <script type="text/javascript" th:src="@{/js/login/register.js}"></script>
 </div>
 </body>
 </html>

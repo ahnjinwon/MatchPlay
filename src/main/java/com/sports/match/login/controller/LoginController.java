@@ -18,7 +18,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String register(){
-        return "/common/register";
+        return "/login/register";
     }
     @PostMapping("/register")
     public String regist(RegistDto registDto){
@@ -51,5 +51,15 @@ public class LoginController {
     @ResponseBody
     public boolean checkKey(@RequestParam("key") String key, @RequestParam("memEmail") String memEmail){
         return loginService.checkKey(key,memEmail);
+    }
+
+    @GetMapping("loginpage")
+    public String loginpage(){
+        return "/login/loginPage";
+    }
+
+    @GetMapping("findId")
+    public String findId(){
+        return "/login/findId";
     }
 }

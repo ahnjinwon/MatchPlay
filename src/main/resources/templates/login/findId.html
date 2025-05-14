@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Match Play</title>
+    <link rel="stylesheet" href="/css/login/loginPage.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-center align-items-start" style="padding-top: 100px; padding-bottom: 100px;">
+        <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
+            <h3 class="text-center mb-4">아이디 찾기</h3>
+            <form id="registerForm" action="/login/findId" method="post">
+                <!-- 이메일 입력 -->
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-1">
+                        <label for="memEmail" class="form-label me-2 mb-0">E-Mail:</label>
+                        <small>등록된 이메일로 아이디가 발송됩니다.</small>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <!-- 이메일 앞부분 입력 -->
+                        <input type="text" id="memEmailId" name="memEmailId" class="form-control" placeholder="E-mail" required>
+
+                        <!-- @ 표시 -->
+                        <span class="input-group-text">@</span>
+
+                        <!-- 직접 도메인 입력 필드 (기본은 숨김) -->
+                        <input type="text" id="customDomain" class="form-control" placeholder="example.com" style="display: none;">
+
+                        <!-- 도메인 선택 -->
+                        <select id="memEmailDomain" name="memEmailDomain" class="form-select" required>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="nate.com">nate.com</option>
+                            <option value="custom">직접 입력</option>
+                        </select>
+                    </div>
+
+                    <!-- 숨겨진 전체 이메일 전달용 input -->
+                    <input type="hidden" id="memEmail" name="memEmail">
+
+                    <!-- 버튼을 오른쪽으로 정렬 -->
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary btn-sm" id="sendId">아이디 발송</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/login/findId.js}"></script>
+</div>
+</body>
+</html>

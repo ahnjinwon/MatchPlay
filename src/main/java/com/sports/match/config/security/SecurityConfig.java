@@ -25,18 +25,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화 (API 개발 시 필요)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/login/**", "/common/**", "/login/failure", "/js/**", "/css/**", "/images/**").permitAll() // 로그인, 회원가입은 인증 없이 접근 가능
+                        .requestMatchers("/","/login/**", "/common/**", "/js/**", "/css/**", "/images/**").permitAll() // 로그인, 회원가입은 인증 없이 접근 가능
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/register?error=access")) // 인증되지 않은 접근 시 /login/failure?error=true로 리다이렉트
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/loginpage?error=access")) // 인증되지 않은 접근 시 /login/failure?error=true로 리다이렉트
                         .accessDeniedHandler(new AccessDeniedHandlerImpl()) // 권한이 없는 접근 시 기본 처리
                 )
                 .formLogin(login -> login
                         .loginProcessingUrl("/login/signin")
                         .defaultSuccessUrl("/", true)
                         .failureHandler((request, response, exception) -> {
-                            response.sendRedirect("/login/register?error=true");
+                            response.sendRedirect("/login/loginpage?error=true");
                         })
                 )
                 .userDetailsService(customUserDetailsService)
