@@ -9,13 +9,15 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <h2>현재 비밀번호를 입력해 주세요.</h2>
-        <div class="input-group">
-            <input name="memPw" id="memPw" type="password" class="form-control" placeholder="비밀번호 입력" required>
-            <button class="btn btn-outline-secondary btn-sm" type="button" id="RtogglePassword">
-                <i class="fa-solid fa-eye" id="ReyeIcon"></i>
-            </button>
-            <button type="button" id="checkPw">확인</button>
+        <div class="container mt-4" style="max-width: 500px;">
+            <h5 class="mb-3 text-center">현재 비밀번호를 입력해 주세요.</h5>
+            <div class="input-group">
+                <input name="memPw" id="memPw" type="password" class="form-control" placeholder="비밀번호 입력" required>
+                <button class="btn btn-outline-secondary" type="button" id="RtogglePassword">
+                    <i class="fa-solid fa-eye" id="ReyeIcon"></i>
+                </button>
+                <button class="btn btn-primary" type="button" id="checkPw">확인</button>
+            </div>
         </div>
         <script type="text/javascript" th:src="@{/js/mypage/checkPw.js}"></script>
     </div>
