@@ -8,10 +8,18 @@
             MEMBER(mem_id, mem_pw, mem_name, mem_tel, mem_email, grade)
         VALUES(#{memId}, #{memPw}, #{memName}, #{memTel}, #{memEmail}, #{grade})
     </insert>
+
     <select id="checkById" resultType="int">
         SELECT COUNT(*)
         FROM MEMBER
         WHERE
         mem_id=#{memId}
+    </select>
+
+    <select id="checkEmail" resultType="String">
+        SELECT mem_id
+        FROM MEMBER
+        WHERE
+        mem_name=#{memName} and mem_email=#{memEmail}
     </select>
 </mapper>

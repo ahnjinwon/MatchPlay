@@ -34,11 +34,6 @@ public class LoginController {
         boolean exists = loginService.checkById(memId);
         return Map.of("exists", exists);
     }
-    @GetMapping("/failure")
-    public String loginFail(){
-        System.out.println("실패!!");
-        return "/common/failure";
-    }
 
     @GetMapping("/checkEmail")
     @ResponseBody
@@ -61,5 +56,11 @@ public class LoginController {
     @GetMapping("findId")
     public String findId(){
         return "/login/findId";
+    }
+
+    @PostMapping("findId")
+    @ResponseBody
+    public boolean findId(@RequestParam("memEmail") String memEmail, @RequestParam("memName") String memName){
+        return loginService.checkEmail(memEmail, memName);
     }
 }

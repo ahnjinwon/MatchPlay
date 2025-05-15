@@ -58,4 +58,22 @@ public class LoginService {
             return  false;
         }
     }
+
+    public boolean checkEmail(String memEmail, String memName) {
+        String memId = loginDao.checkEmail(memEmail, memName);
+        if(memId==null){
+            return false;
+        }
+        try {
+            Email email = new Email();
+            email.setReceiveAddress(memEmail);
+            email.setMailTitle("MatchPlay에서 아이디를 조회합니다.");
+            email.setMailContent("회원님의 id는 <"+memId+"> 입니다.");
+            emailUtil.sendEmail(email);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
