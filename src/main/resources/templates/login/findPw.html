@@ -11,16 +11,19 @@
 <div layout:fragment="content">
     <div class="d-flex justify-content-center align-items-start" style="padding-top: 100px; padding-bottom: 100px;">
         <div class="card shadow-lg p-4" style="width: 100%; max-width: 700px;">
-            <h3 class="text-center mb-4">아이디 찾기</h3>
+            <h3 class="text-center mb-4">비밀번호 찾기</h3>
             <form id="registerForm" action="/login/findId" method="post">
-                <!-- 이름 입력 -->
-                <div class="mb-3">
-                    <div class="d-flex align-items-center mb-1">
-                        <label for="memName" class="form-label me-2 mb-0">이름:</label>
+                <div class="mb-3 d-flex gap-4">
+                    <!-- 이름 입력 -->
+                    <div>
+                        <label for="memName" class="form-label">이름:</label>
+                        <input type="text" id="memName" name="memName" class="form-control" placeholder="이름" required style="max-width: 300px;">
                     </div>
 
-                    <div class="input-group mb-2">
-                        <input type="text" id="memName" name="memName" class="form-control" placeholder="이름" required style="max-width: 200px;">
+                    <!-- 아이디 입력 -->
+                    <div>
+                        <label for="memId" class="form-label">아이디:</label>
+                        <input type="text" id="memId" name="memId" class="form-control" placeholder="Id" required style="max-width: 300px;">
                     </div>
                 </div>
                 <!-- 이메일 입력 -->
@@ -54,14 +57,15 @@
                     <input type="hidden" id="memEmail" name="memEmail">
 
                     <!-- 버튼을 오른쪽으로 정렬 -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" id="sendId">아이디 발송</button>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <small class="text-muted">비밀번호는 랜덤하게 변경됩니다.</small>
+                        <button type="button" class="btn btn-primary btn-sm" id="sendId">비밀번호 발송</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/login/findId.js}"></script>
+    <script type="text/javascript" th:src="@{/js/login/findPw.js}"></script>
 </div>
 </body>
 </html>

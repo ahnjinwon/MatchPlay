@@ -56,6 +56,7 @@ document.getElementById("sendId").addEventListener("click", async function(){
     const customDomain = document.getElementById("customDomain");
     const fullEmail = document.getElementById("memEmail");
     const memName = document.getElementById("memName");
+    const memId = document.getElementById("memId");
 
     const id = emailId.value.trim();
     const isCustom = emailDomain.value === "custom";
@@ -66,24 +67,34 @@ document.getElementById("sendId").addEventListener("click", async function(){
         return;
     }
 
+    if(memId.value.trim()===""){
+        alert("아이디를 입력해주세요.");
+        return;
+    }
+
     if(id===""){
-        alert("이메일을 정확히 입력해주세요");
+        alert("이메일을 입력해주세요");
         return;
     }
 
     if (!id || !domain || (isCustom && customDomain.value.trim() === "")) {
-        alert("이메일을 정확히 입력해주세요.");
+        alert("도메인을 입력해주세요.");
+        return;
+    }
+
+    const confirmSend = confirm("임시 비밀번호를 메일로 발송하시겠습니까? 발송 시 기존 비밀번호는 사용이 불가능합니다.");
+    if (!confirmSend) {
         return;
     }
 
     try{
         fullEmail.value = `${id}@${domain}`;
-        const response = await fetch("/login/findId", {
+        const response = await fetch("/login/findPw", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `memEmail=${encodeURIComponent(fullEmail.value)}&memName=${encodeURIComponent(memName.value)}`
+            body: `memEmail=${encodeURIComponent(fullEmail.value)}&memName=${encodeURIComponent(memName.value)}&memId=${encodeURIComponent(memId.value)}`
         });
         if(!response.ok){
             throw new Error("서버 오류");
@@ -91,7 +102,8 @@ document.getElementById("sendId").addEventListener("click", async function(){
         const isValid = await response.json();
 
         if(isValid){
-            alert("아이디 전송이 완료되었습니다. 등록한 메일에서 확인해 주세요.");
+            alert("비밀번호 전송이 완료되었습니다. 등록한 메일에서 확인해 주세요.");
+            alert("기존 비밀번호는 사용이 불가하므로 꼭 비밀번호를 변경해주세요.");
             window.location.href = "/login/loginpage";
         }else{
             alert("일치하는 계정이 없습니다. 다시 확인해주세요.");

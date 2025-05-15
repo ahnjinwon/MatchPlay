@@ -1,12 +1,15 @@
 package com.sports.match.login.service;
 
 import com.sports.match.login.model.dao.LoginDao;
+import com.sports.match.login.model.dto.FindPwDto;
 import com.sports.match.login.model.dto.RegistDto;
 import com.sports.match.util.EmailUtil;
+import com.sports.match.util.TempPasswordGenerator;
 import com.sports.match.util.model.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -69,6 +72,29 @@ public class LoginService {
             email.setReceiveAddress(memEmail);
             email.setMailTitle("MatchPlay에서 아이디를 조회합니다.");
             email.setMailContent("회원님의 id는 <"+memId+"> 입니다.");
+            emailUtil.sendEmail(email);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean checkPw(FindPwDto findPwDto) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Email email = new Email();
+        String tempPw = TempPasswordGenerator.generate();
+        findPwDto.setMemPw(encoder.encode(tempPw));
+        int result = loginDao.changePw(findPwDto);
+
+        if(result == 0){
+            return false;
+        }
+
+        try{
+            email.setReceiveAddress(findPwDto.getMemEmail());
+            email.setMailTitle("MatchPlay에서 임시 비밀번호를 발급하였습니다.");
+            email.setMailContent("회원님의 임시 비밀번호는 <"+tempPw+"> 입니다.\n 로그인 후 꼭 비밀번호를 변경하여 주십시오.");
             emailUtil.sendEmail(email);
             return true;
         }catch (Exception e){

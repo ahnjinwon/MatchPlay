@@ -1,5 +1,6 @@
 package com.sports.match.login.model.dao;
 
+import com.sports.match.login.model.dto.FindPwDto;
 import com.sports.match.login.model.dto.RegistDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,4 +12,6 @@ public interface LoginDao {
     int checkById(String memId);
 
     String checkEmail(@Param("memEmail") String memEmail,@Param("memName") String memName);
+
+    int changePw(FindPwDto findPwDto);
 }

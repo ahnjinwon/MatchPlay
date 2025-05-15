@@ -1,5 +1,6 @@
 package com.sports.match.login.controller;
 
+import com.sports.match.login.model.dto.FindPwDto;
 import com.sports.match.login.model.dto.RegistDto;
 import com.sports.match.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,16 @@ public class LoginController {
     @ResponseBody
     public boolean findId(@RequestParam("memEmail") String memEmail, @RequestParam("memName") String memName){
         return loginService.checkEmail(memEmail, memName);
+    }
+
+    @GetMapping("findPw")
+    public String findPw(){
+        return "/login/findPw";
+    }
+
+    @PostMapping("findPw")
+    @ResponseBody
+    public boolean findPw(FindPwDto findPwDto){
+        return loginService.checkPw(findPwDto);
     }
 }

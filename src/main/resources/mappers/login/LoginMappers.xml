@@ -22,4 +22,12 @@
         WHERE
         mem_name=#{memName} and mem_email=#{memEmail}
     </select>
+
+    <update id="changePw" parameterType="com.sports.match.login.model.dto.FindPwDto">
+        UPDATE MEMBER
+        SET
+        mem_pw = #{memPw}
+        WHERE
+        mem_name=#{memName} and mem_id=#{memId} and mem_email=#{memEmail}
+    </update>
 </mapper>
