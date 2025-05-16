@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>Match Play</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/match/main.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="row text-center">
+
+                <!-- 경기장 1 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 1</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 경기장 2 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 1</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 경기장 3 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 1</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script type="text/javascript" th:src="@{/js/match/main.js}"></script>
+    </div>
+</body>
+</html>
