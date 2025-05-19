@@ -1,11 +1,10 @@
 document.getElementById("showQueue1").addEventListener("click", function(){
     const queue = window.queueData || [];
 
-    let html = '<ul>';
+    let html = '<ol>';
 
     if (Array.isArray(queue) && queue.length > 0) {
         for (const match of queue) {
-            // match 배열 구조가 올바른지도 체크하면 더 안전
             if (Array.isArray(match) && match.length === 2
                 && Array.isArray(match[0]) && Array.isArray(match[1])) {
 
@@ -18,7 +17,7 @@ document.getElementById("showQueue1").addEventListener("click", function(){
         html += '<li>대기열이 없습니다.</li>';
     }
 
-    html += '</ul>';
+    html += '</ol>';
 
     document.getElementById('queueContent1').innerHTML = html;
     const modal = new bootstrap.Modal(document.getElementById('queueModal1'));
