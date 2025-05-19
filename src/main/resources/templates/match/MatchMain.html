@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>Match Play</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/match/MatchMain.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="row text-center">
+
+                <!-- 경기장 1 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 1</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary ms-2 mt-3" id="showQueue1">대기열 보기</button>
+                </div>
+
+                <!-- 대기열 모달: 코트 1 -->
+                <div class="modal fade" id="queueModal1" tabindex="-1" aria-labelledby="queueModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="queueModalLabel1">🏸 코트 1 대기열</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="queueContent1">
+                                <!-- 여기에 대기열 내용이 동적으로 들어옵니다 -->
+                                <div class="player-names">
+                                    <div class="team team-left">
+                                        <span>짱구</span>
+                                        <span>맹구</span>
+                                    </div>
+                                    <div class="team team-right">
+                                        <span>철수</span>
+                                        <span>훈이</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 경기장 2 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 2</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary ms-2 mt-3" id="showQueue2">대기열 보기</button>
+                </div>
+
+                <!-- 대기열 모달: 코트 2 -->
+                <div class="modal fade" id="queueModal2" tabindex="-1" aria-labelledby="queueModalLabel2" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="queueModalLabel2">🏸 코트 2 대기열</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="queueContent2">
+                                <ul>
+                                    <li>유저1</li>
+                                    <li>유저2</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 경기장 3 -->
+                <div class="col-md-4 border p-3">
+                    <div class="p-3 bg-light border rounded">🏸 코트 3</div>
+                    <div class="court-box">
+                        <div class="court-line">
+                            <div class="score score-left">5</div>  <!-- 왼쪽 점수 -->
+                            <div class="player-names">
+                                <div class="team team-left">
+                                    <span>짱구</span>
+                                    <span>맹구</span>
+                                </div>
+                                <div class="team team-right">
+                                    <span>철수</span>
+                                    <span>훈이</span>
+                                </div>
+                            </div>
+                            <div class="score score-right">5</div> <!-- 오른쪽 점수 -->
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary ms-2 mt-3" id="showQueue3">대기열 보기</button>
+                </div>
+
+                <!-- 대기열 모달: 코트 3 -->
+                <div class="modal fade" id="queueModal3" tabindex="-1" aria-labelledby="queueModalLabel3" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="queueModalLabel3">🏸 코트 3 대기열</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="queueContent3">
+                                <ul>
+                                    <li>유저1</li>
+                                    <li>유저2</li>
+                                    <li>유저3</li>
+                                    <li>유저4</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+                window.queueData = /*[[${queue}]]*/ [];
+            /*]]>*/
+        </script>
+        <script type="text/javascript" th:src="@{/js/match/MatchMain.js}"></script>
+    </div>
+</body>
+</html>
