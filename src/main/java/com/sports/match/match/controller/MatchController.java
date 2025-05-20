@@ -1,5 +1,7 @@
 package com.sports.match.match.controller;
 
+import com.sports.match.match.model.dto.AttMemberListDto;
+import com.sports.match.match.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/match")
 public class MatchController {
+
+    private final MatchService matchService;
 
     @GetMapping("/main")
     public String matchMain(Model model){
@@ -28,6 +32,8 @@ public class MatchController {
                 )
         );
 
+        List<AttMemberListDto> attMemList = matchService.getAttMemList();
+        model.addAttribute("attMemList", attMemList);
         model.addAttribute("queue", queue);
         return "/match/MatchMain";
     }

@@ -134,3 +134,18 @@
     text-align: center;
     user-select: none;
 }
+
+.attendee.selected {
+    background-color: #d1e7dd;
+    font-weight: bold;
+}
+
+.team-a {
+    background-color: #cce5ff;  /* 연한 파란색 배경 */
+    color: #004085;
+}
+
+.team-b {
+    background-color: #f8d7da;  /* 연한 빨간색 배경 */
+    color: #721c24;
+}
