@@ -13,7 +13,13 @@ function updateMemberListUI(courtId) {
   for (const mem of window.attMemList) {
     const index = selectedMembers.indexOf(mem.memId);
     let className = index !== -1 ? (index < 2 ? "team-a" : "team-b") : "";
-    html += `<li class="attendee ${className}" data-id="${mem.memId}" style="cursor:pointer;">${mem.memName} (${mem.grade})</li>`;
+    html += `
+      <li class="attendee ${className}"
+          data-id="${mem.memId}"
+          title="ID: ${mem.memId}"
+          style="cursor:pointer;">
+        ${mem.memName} (${mem.grade})
+      </li>`;
   }
 
   html += "</ul>";
@@ -105,9 +111,18 @@ function setupShowQueueModal(courtId) {
 
 // 참가 버튼 모달 열기
 function setupOpenJoinQueueModal(courtId) {
+  const modalEl = document.getElementById(`joinQueueModal${courtId}`);
+  const modal = new bootstrap.Modal(modalEl);
+
   document.getElementById(`openJoinQueue${courtId}`).addEventListener("click", () => {
-    const modal = new bootstrap.Modal(document.getElementById(`joinQueueModal${courtId}`));
     modal.show();
+  });
+
+  // 모달 닫힐 때 선택 초기화
+  modalEl.addEventListener("hidden.bs.modal", () => {
+    courtData[courtId].selectedMembers.length = 0;
+    updateMemberListUI(courtId);
+    document.getElementById(`joinQueueBtn${courtId}`).disabled = true;
   });
 }
 
