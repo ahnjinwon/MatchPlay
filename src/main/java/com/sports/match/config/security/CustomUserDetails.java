@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
@@ -12,7 +13,12 @@ public class CustomUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final String memName;
+    private final String memTel;
     private final String memEmail;
+    private final Timestamp createdAt;
+    private final String grade;
+    private final int approved;
+    private final String profileImg;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(MemberDto memberDto) {
@@ -20,7 +26,12 @@ public class CustomUserDetails implements UserDetails {
         this.username = memberDto.getMemId();
         this.password = memberDto.getMemPw();
         this.memName = memberDto.getMemName();
+        this.memTel = memberDto.getMemTel();
         this.memEmail = memberDto.getMemEmail();
+        this.createdAt = memberDto.getCreatedAt();
+        this.grade = memberDto.getGrade();
+        this.approved = memberDto.getApproved();
+        this.profileImg = memberDto.getProfileImg();
         this.authorities = AuthorityUtils.createAuthorityList(memberDto.getMemRole());
     }
 
@@ -59,6 +70,26 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isAccountNonLocked() {
         return true;
+    }
+
+    public String getMemTel() {
+        return memTel;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public int getApproved() {
+        return approved;
+    }
+
+    public String getProfileImg() {
+        return profileImg;
     }
 
     @Override

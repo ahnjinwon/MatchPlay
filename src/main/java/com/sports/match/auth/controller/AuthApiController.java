@@ -17,6 +17,7 @@ public class AuthApiController  {
     @GetMapping("/attend")
     public int attend(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        authService.registQueue(userDetails);
         boolean result = authService.attend(userDetails.getMemNo());
         return  result ? 1 : 0;
     }

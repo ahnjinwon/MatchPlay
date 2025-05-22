@@ -17,5 +17,6 @@ public class MemberDto {
     private Timestamp createdAt;
     private String memRole;
     private String grade;
-    private String approved;
+    private int approved;
+    private String profileImg;
 }
