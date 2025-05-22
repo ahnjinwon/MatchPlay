@@ -25,6 +25,7 @@ public class AuthApiController  {
     @GetMapping("/attendCancel")
     public int attendCancel(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        authService.deleteQueue(userDetails);
         boolean result = authService.attendCancel(userDetails.getMemNo());
         return  result ? 1 : 0;
     }

@@ -33,7 +33,7 @@ public class MatchService {
             }
             attMemList.sort(Comparator.comparing(AttMemberListDto::getMemName));
         }
-
+        System.out.println(attMemList);
         return attMemList;
     }
 }

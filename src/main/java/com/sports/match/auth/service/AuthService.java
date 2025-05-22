@@ -73,4 +73,12 @@ public class AuthService {
         infoMap.put("grade", grade);
         redisTemplate.opsForHash().putAll(hashKey, infoMap);
     }
+
+    public void deleteQueue(CustomUserDetails userDetails) {
+        String setKey = "attendees";
+        String hashKey = "attendee:info:" + userDetails.getUsername();
+
+        redisTemplate.opsForSet().remove(setKey, userDetails.getUsername());
+        redisTemplate.delete(hashKey);
+    }
 }
