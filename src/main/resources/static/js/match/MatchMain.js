@@ -97,11 +97,7 @@ function setupJoinQueueButton(courtId) {
       window[queueKey] = queue;
 
       alert("대기열에 등록되었습니다!");
-      selectedMembers.length = 0;
-      updateMemberListUI(courtId);
-      updateQueueUI(courtId);
-      this.disabled = true;
-      $(`#joinQueueModal${courtId}`).modal('hide');
+      window.location.reload();
     })
     .catch(err => {
       alert("대기열 저장에 실패했습니다: " + err.message);
