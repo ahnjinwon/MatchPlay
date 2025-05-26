@@ -11,8 +11,11 @@ function updateMemberListUI(courtId) {
   let html = "<ul>";
 
   for (const mem of window.attMemList) {
+    if (mem.status !== "0") continue;
+
     const index = selectedMembers.indexOf(mem.memId);
     let className = index !== -1 ? (index < 2 ? "team-a" : "team-b") : "";
+
     html += `
       <li class="attendee ${className}"
           data-id="${mem.memId}"
@@ -81,6 +84,7 @@ function setupJoinQueueButton(courtId) {
     updateMemberListUI(courtId);
     updateQueueUI(courtId);
     this.disabled = true;
+    $(`#joinQueueModal${courtId}`).modal('hide');
   });
 }
 

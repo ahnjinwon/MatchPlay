@@ -8,7 +8,7 @@ import org.apache.ibatis.binding.BindingException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +71,16 @@ public class AuthService {
         Map<String, String> infoMap = new HashMap<>();
         infoMap.put("memName", memName);
         infoMap.put("grade", grade);
+        infoMap.put("status", "0");
         redisTemplate.opsForHash().putAll(hashKey, infoMap);
+
+        // 오늘 밤 12시 기준 만료 시간 설정
+        LocalDateTime midnight = LocalDate.now().plusDays(1).atStartOfDay();
+        Instant expireAt = midnight.atZone(ZoneId.systemDefault()).toInstant();
+
+        // Set과 Hash 모두 자정에 만료되도록 설정
+        redisTemplate.expireAt(setKey, expireAt);
+        redisTemplate.expireAt(hashKey, expireAt);
     }
 
     public void deleteQueue(CustomUserDetails userDetails) {

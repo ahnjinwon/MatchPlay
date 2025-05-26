@@ -11,6 +11,7 @@ public class AttMemberListDto {
     private String memId;
     private String memName;
     private String grade;
+    private String status;
 
     public void setGrade(String grade) {
         switch (grade.toLowerCase()) {

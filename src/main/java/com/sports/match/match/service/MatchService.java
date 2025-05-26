@@ -28,6 +28,7 @@ public class MatchService {
                 dto.setMemId(Id);
                 dto.setMemName((String) info.get("memName"));
                 dto.setGrade((String) info.get("grade"));
+                dto.setStatus((String) info.get("status"));
 
                 attMemList.add(dto);
             }
