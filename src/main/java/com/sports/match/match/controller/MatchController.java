@@ -1,12 +1,13 @@
 package com.sports.match.match.controller;
 
 import com.sports.match.match.model.dto.AttMemberListDto;
+import com.sports.match.match.model.dto.QueueDto;
 import com.sports.match.match.service.MatchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,5 +37,11 @@ public class MatchController {
         model.addAttribute("attMemList", attMemList);
         model.addAttribute("queue", queue);
         return "/match/MatchMain";
+    }
+
+    @PostMapping("savequeue")
+    @ResponseBody
+    public ResponseEntity<?> saveQueue(@RequestBody QueueDto queueDto) {
+        return matchService.saveQueue(queueDto);
     }
 }

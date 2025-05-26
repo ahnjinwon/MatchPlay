@@ -73,18 +73,39 @@ function setupJoinQueueButton(courtId) {
     if (selectedMembers.length !== 4) return;
 
     const selected = selectedMembers.map(id => window.attMemList.find(m => m.memId === id));
-    const teamA = selected.slice(0, 2).map(m => m.memName);
-    const teamB = selected.slice(2, 4).map(m => m.memName);
+    // memId + memName 객체 배열로 변환
+    const teamA = selected.slice(0, 2).map(m => ({ memId: m.memId, memName: m.memName }));
+    const teamB = selected.slice(2, 4).map(m => ({ memId: m.memId, memName: m.memName }));
 
-    queue.push([teamA, teamB]);
-    window[queueKey] = queue;
+    fetch('/match/savequeue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        courtId,
+        teamA,
+        teamB
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to save queue');
+      return res.json();
+    })
+    .then(() => {
+      // 서버에서 다시 불러온다면 queue.push 부분은 빼도 되지만,
+      // 일단 UI 빠르게 업데이트용으로 유지
+      queue.push([teamA, teamB]);
+      window[queueKey] = queue;
 
-    alert("대기열에 등록되었습니다!");
-    selectedMembers.length = 0;
-    updateMemberListUI(courtId);
-    updateQueueUI(courtId);
-    this.disabled = true;
-    $(`#joinQueueModal${courtId}`).modal('hide');
+      alert("대기열에 등록되었습니다!");
+      selectedMembers.length = 0;
+      updateMemberListUI(courtId);
+      updateQueueUI(courtId);
+      this.disabled = true;
+      $(`#joinQueueModal${courtId}`).modal('hide');
+    })
+    .catch(err => {
+      alert("대기열 저장에 실패했습니다: " + err.message);
+    });
   });
 }
 
