@@ -1,6 +1,7 @@
 package com.sports.match.match.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sports.match.match.model.dao.MatchDao;
 import com.sports.match.match.model.dto.AttMemberListDto;
@@ -76,6 +77,27 @@ public class MatchService {
             return ResponseEntity.badRequest().body("JSON 변환 실패: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("대기열 저장 실패: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> queueList(int courtId) {
+        String key = "queue:court:" + courtId;
+        try {
+            List<String> rawList = redisTemplate.opsForList().range(key, 0, -1);
+            if (rawList == null) return ResponseEntity.ok(Collections.emptyList());
+
+            List<Map<String, List<Map<String, String>>>> parsedQueue = new ArrayList<>();
+
+            for (String item : rawList) {
+                Map<String, List<Map<String, String>>> parsedItem = objectMapper.readValue(
+                        item, new TypeReference<>() {});
+                parsedQueue.add(parsedItem);
+            }
+
+            return ResponseEntity.ok(parsedQueue);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("대기열 불러오기 실패: " + e.getMessage());
         }
     }
 }

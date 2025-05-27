@@ -44,4 +44,10 @@ public class MatchController {
     public ResponseEntity<?> saveQueue(@RequestBody QueueDto queueDto) {
         return matchService.saveQueue(queueDto);
     }
+
+    @GetMapping("queuelist")
+    @ResponseBody
+    public ResponseEntity<?> queueList(@RequestParam("courtId") int courtId){
+        return matchService.queueList(courtId);
+    }
 }

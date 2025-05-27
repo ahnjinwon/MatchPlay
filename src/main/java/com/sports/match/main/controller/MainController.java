@@ -1,8 +1,9 @@
 package com.sports.match.main.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sports.match.auth.service.AuthService;
 import com.sports.match.config.security.CustomUserDetails;
-import com.sports.match.main.service.testService;
+import com.sports.match.main.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 public class MainController {
-    private testService testservice;
+    private final MainService mainService;
     private final AuthService authService;
     @RequestMapping(value = {"/", "/home"})
-    public String main(Authentication authentication, Model model) {
+    public String main(Authentication authentication, Model model) throws JsonProcessingException {
         if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             //authService.mailtest(userDetails.getMemEmail());

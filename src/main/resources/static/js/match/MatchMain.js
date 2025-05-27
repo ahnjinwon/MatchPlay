@@ -29,17 +29,6 @@ function updateMemberListUI(courtId) {
   document.getElementById(`attMemListContent${courtId}`).innerHTML = html;
 }
 
-// 대기열 UI 갱신
-function updateQueueUI(courtId) {
-  const { queue } = courtData[courtId];
-  let html = "<ol>";
-  queue.forEach(match => {
-    html += `<li>[${match[0].join(" & ")}] vs [${match[1].join(" & ")}]</li>`;
-  });
-  html += "</ol>";
-  document.getElementById(`queueContent${courtId}`).innerHTML = html;
-}
-
 // 멤버 클릭 이벤트
 function setupMemberClickHandler(courtId) {
   const content = document.getElementById(`attMemListContent${courtId}`);
@@ -108,25 +97,33 @@ function setupJoinQueueButton(courtId) {
 // 대기열 모달 표시
 function setupShowQueueModal(courtId) {
   document.getElementById(`showQueue${courtId}`).addEventListener("click", function () {
-    const queue = window[`queueData${courtId === 1 ? '' : courtId}`] || [];
-    let html = "<ol>";
+    fetch(`/match/queuelist?courtId=${courtId}`)
+      .then(res => {
+        if (!res.ok) throw new Error("대기열 정보를 불러오는 데 실패했습니다.");
+        return res.json();
+      })
+      .then(queue => {
+        let html = "<ol>";
 
-    if (Array.isArray(queue) && queue.length > 0) {
-      for (const match of queue) {
-        if (Array.isArray(match[0]) && Array.isArray(match[1])) {
-          const teamA = match[0].join(' & ');
-          const teamB = match[1].join(' & ');
-          html += `<li>[${teamA}] vs [${teamB}]</li>`;
+        if (Array.isArray(queue) && queue.length > 0) {
+          for (const match of queue) {
+            const teamA = match.teamA.map(player => player.memName).join(' & ');
+            const teamB = match.teamB.map(player => player.memName).join(' & ');
+            html += `<li>[${teamA}] vs [${teamB}]</li>`;
+          }
+        } else {
+          html += "<li>대기열이 없습니다.</li>";
         }
-      }
-    } else {
-      html += "<li>대기열이 없습니다.</li>";
-    }
 
-    html += "</ol>";
-    document.getElementById(`queueContent${courtId}`).innerHTML = html;
-    const modal = new bootstrap.Modal(document.getElementById(`queueModal${courtId}`));
-    modal.show();
+        html += "</ol>";
+        document.getElementById(`queueContent${courtId}`).innerHTML = html;
+
+        const modal = new bootstrap.Modal(document.getElementById(`queueModal${courtId}`));
+        modal.show();
+      })
+      .catch(err => {
+        alert("대기열 정보를 불러오는 중 오류가 발생했습니다: " + err.message);
+      });
   });
 }
 
