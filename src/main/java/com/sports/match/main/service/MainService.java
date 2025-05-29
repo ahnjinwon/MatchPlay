@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +15,38 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class MainService {
+
     private final RedisTemplate<String, String> redisTemplate;
+
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정 (00:00:00)
     public void resetCourt() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        //매치 초기화
         for (int courtId = 1; courtId <= 3; courtId++) {
             String key = "match:court:" + courtId;
-            redisTemplate.delete(key);
-            redisTemplate.opsForList().rightPush(key, "[]");
-        }
 
+            // 1) 대기열 리스트 가져오기 (List<String> JSON 문자열)
+            List<String> rawList = redisTemplate.opsForList().range(key, 0, -1);
+            if (rawList != null) {
+                for (String item : rawList) {
+                    Map<String, Object> parsedItem = objectMapper.readValue(item, new TypeReference<>() {});
+
+                    List<Map<String, String>> teamA = (List<Map<String, String>>) parsedItem.get("teamA");
+                    List<Map<String, String>> teamB = (List<Map<String, String>>) parsedItem.get("teamB");
+
+                    Stream.concat(teamA.stream(), teamB.stream())
+                            .forEach(player -> {
+                                String memId = player.get("memId");
+                                if (memId != null) {
+                                    String hashKey = "attendee:info:" + memId;
+                                    redisTemplate.opsForHash().put(hashKey, "status", "0");
+                                }
+                            });
+                }
+            }
+            redisTemplate.delete(key);
+        }
+        //대기열 초기화
         for (int courtId = 1; courtId <= 3; courtId++) {
             String key = "queue:court:" + courtId;
 

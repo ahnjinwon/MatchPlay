@@ -79,13 +79,12 @@ function setupJoinQueueButton(courtId) {
       if (!res.ok) throw new Error('Failed to save queue');
       return res.json();
     })
-    .then(() => {
+    .then(data => {
       // 서버에서 다시 불러온다면 queue.push 부분은 빼도 되지만,
       // 일단 UI 빠르게 업데이트용으로 유지
       queue.push([teamA, teamB]);
       window[queueKey] = queue;
-
-      alert("대기열에 등록되었습니다!");
+      alert(data.message);
       window.location.reload();
     })
     .catch(err => {
