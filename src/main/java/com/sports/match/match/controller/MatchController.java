@@ -21,12 +21,12 @@ public class MatchController {
 
     @GetMapping("/main")
     public String matchMain(Model model){
-        List<AttMemberListDto> attMemList = matchService.getAttMemList();
+        List<AttMemberListDto> attMemberList = matchService.getAttMemList();
+        model.addAttribute("attMemList", attMemberList);
         for(int courtId=0; courtId<3; courtId++){
             List<MatchListDto> matchMember = matchService.getMatchMember(courtId);
             model.addAttribute("court"+courtId, matchMember);
         }
-        model.addAttribute("attMemList", attMemList);
         return "/match/MatchMain";
     }
 
@@ -40,5 +40,11 @@ public class MatchController {
     @ResponseBody
     public ResponseEntity<?> queueList(@RequestParam("courtId") int courtId){
         return matchService.queueList(courtId);
+    }
+
+    @GetMapping("attendees")
+    @ResponseBody
+    public List<AttMemberListDto> getAttendees(){
+        return matchService.getAttMemList();
     }
 }

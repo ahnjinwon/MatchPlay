@@ -18,7 +18,7 @@ public class MainService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정 (00:00:00)
+    @Scheduled(cron = "0 59 23 * * *") // 매일 자정 (00:00:00)
     public void resetCourt() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         //매치 초기화

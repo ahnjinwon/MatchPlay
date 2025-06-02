@@ -6,10 +6,9 @@ const courtData = {
 };
 
 // 멤버 리스트 UI 갱신
-function updateMemberListUI(courtId) {
+async function updateMemberListUI(courtId) {
   const { selectedMembers } = courtData[courtId];
   let html = "<ul>";
-
   for (const mem of window.attMemList) {
     if (mem.status !== "0") continue;
 
@@ -131,7 +130,12 @@ function setupOpenJoinQueueModal(courtId) {
   const modalEl = document.getElementById(`joinQueueModal${courtId}`);
   const modal = new bootstrap.Modal(modalEl);
 
-  document.getElementById(`openJoinQueue${courtId}`).addEventListener("click", () => {
+  document.getElementById(`openJoinQueue${courtId}`).addEventListener("click",async () => {
+    const res = await fetch('/match/attendees');
+    const data = await res.json();
+    window.attMemList = data;
+    console.log("최신 출석 리스트", window.attMemList);
+    updateMemberListUI(courtId);
     modal.show();
   });
 
