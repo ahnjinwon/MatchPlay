@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.stream.Stream;
 public class MainService {
 
     private final RedisTemplate<String, String> redisTemplate;
-
-    @Scheduled(cron = "0 59 23 * * *") // 매일 자정 (00:00:00)
     public void resetCourt() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         //매치 초기화

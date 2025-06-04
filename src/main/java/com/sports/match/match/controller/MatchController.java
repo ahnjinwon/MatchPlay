@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,10 +25,6 @@ public class MatchController {
     public String matchMain(Model model){
         List<AttMemberListDto> attMemberList = matchService.getAttMemList();
         model.addAttribute("attMemList", attMemberList);
-        for(int courtId=0; courtId<3; courtId++){
-            List<MatchListDto> matchMember = matchService.getMatchMember(courtId);
-            model.addAttribute("court"+courtId, matchMember);
-        }
         return "/match/MatchMain";
     }
 
@@ -46,5 +44,18 @@ public class MatchController {
     @ResponseBody
     public List<AttMemberListDto> getAttendees(){
         return matchService.getAttMemList();
+    }
+
+    @GetMapping("court")
+    @ResponseBody
+    public ResponseEntity<?> court() {
+        Map<Integer, List<MatchListDto>> courtMap = new HashMap<>();
+
+        for (int courtId = 1; courtId <= 3; courtId++) {
+            List<MatchListDto> matchMember = matchService.getMatchMember(courtId);
+            courtMap.put(courtId, matchMember);
+        }
+
+        return ResponseEntity.ok(courtMap);
     }
 }

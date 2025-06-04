@@ -84,7 +84,7 @@ public class MatchService {
                 Date expireAt = Date.from(midnight.atZone(ZoneId.systemDefault()).toInstant());
 
                 // 만료 시간 설정
-                redisTemplate.expireAt(key, expireAt);
+                redisTemplate.expireAt(match, expireAt);
 
                 // status 업데이트
                 List<QueueDto.MemberDto> allMembers = new ArrayList<>();
@@ -155,20 +155,45 @@ public class MatchService {
         String key = "match:court:" + courtId;
         List<MatchListDto> noList = new ArrayList<>();
         try {
-            List<String> rawList = redisTemplate.opsForList().range(key, 0, -1);
-            if (rawList == null){
+            List<String> rawList = redisTemplate.opsForList().range(key, 0, 0);
+            if (rawList == null || rawList.isEmpty()){
                 List<MatchListDto> list = new ArrayList<>();
                 for(int j=0; j<4; j++){
                     MatchListDto matchListDto = new MatchListDto();
                     matchListDto.setCourtId(courtId);
-                    matchListDto.setMemName("");
+                    matchListDto.setMemName("None");
                     list.add(matchListDto);
                 }
                 return list;
             }else{
-                //여기부터 수정!
-                //list로 보낼거임
                 List<MatchListDto> list = new ArrayList<>();
+                Map<String, List<Map<String, Object>>> map = objectMapper.readValue(rawList.get(0),
+                        new TypeReference<>() {});
+
+                List<Map<String, Object>> teamA = map.get("teamA");
+                List<Map<String, Object>> teamB = map.get("teamB");
+
+                if (teamA != null) {
+                    for (Map<String, Object> member : teamA) {
+                        MatchListDto dto = new MatchListDto();
+                        dto.setCourtId(courtId);
+                        dto.setMemId((String) member.get("memId"));
+                        dto.setMemName((String) member.get("memName"));
+                        dto.setScore((Integer) member.getOrDefault("score", 0));
+                        list.add(dto);
+                    }
+                }
+
+                if (teamB != null) {
+                    for (Map<String, Object> member : teamB) {
+                        MatchListDto dto = new MatchListDto();
+                        dto.setCourtId(courtId);
+                        dto.setMemId((String) member.get("memId"));
+                        dto.setMemName((String) member.get("memName"));
+                        dto.setScore((Integer) member.getOrDefault("score", 0));
+                        list.add(dto);
+                    }
+                }
 
                 return list;
             }

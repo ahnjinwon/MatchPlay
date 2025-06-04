@@ -146,10 +146,49 @@ function setupOpenJoinQueueModal(courtId) {
     document.getElementById(`joinQueueBtn${courtId}`).disabled = true;
   });
 }
+// 매치 이름 및 점수 표시
+async function loadAllCourts() {
+  try {
+    const response = await fetch('/match/court');
+    const matchdata = await response.json();  // 이름 변경
+
+    for (let courtId = 1; courtId <= 3; courtId++) {
+      const players = matchdata[courtId];
+      if (!players) continue;
+
+      const half = Math.ceil(players.length / 2);
+      const teamLeft = players.slice(0, half);
+      const teamRight = players.slice(half);
+
+      const scoreLeft = teamLeft.reduce((acc, p) => acc + (p.score || 0), 0);
+      const scoreRight = teamRight.reduce((acc, p) => acc + (p.score || 0), 0);
+
+      const courtEl = document.getElementById(`court${courtId}`);
+      if (!courtEl) continue;
+
+      courtEl.querySelector('.score-left').textContent = scoreLeft;
+      courtEl.querySelector('.score-right').textContent = scoreRight;
+
+      courtEl.querySelector('.team-left').innerHTML = teamLeft.map(p => `<span>${p.memName}</span>`).join('');
+      courtEl.querySelector('.team-right').innerHTML = teamRight.map(p => `<span>${p.memName}</span>`).join('');
+    }
+
+  } catch (err) {
+    console.error('코트 정보 로딩 실패:', err);
+  }
+}
+// loadAllCourts() 5초마다 갱신
+document.addEventListener('DOMContentLoaded', () => {
+    // 처음 한 번 호출
+    loadAllCourts();
+
+    // 이후 3초마다 갱신
+    setInterval(loadAllCourts, 3000);
+});
+
 
 // 초기화 함수
 function initializeCourt(courtId) {
-  updateMemberListUI(courtId);
   setupMemberClickHandler(courtId);
   setupJoinQueueButton(courtId);
   setupShowQueueModal(courtId);
