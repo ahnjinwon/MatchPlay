@@ -162,6 +162,28 @@
             </div>
         </div>
 
+        <!-- 선수 점수 증감 모달 -->
+        <div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="playerModalLabel">정보 및 점수 조정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>이름:</strong> <span id="modalName"></span></p>
+                        <p style="display: flex; align-items: center; gap: 8px;">
+                            <strong>개인 점수:</strong>
+                            <span id="modalScore"></span>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="btnScorePlus">+</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="btnScoreMinus">−</button>
+                        </p>
+                        <p><strong>ID:</strong> <span id="modalId"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript" th:src="@{/js/match/MatchMain.js}"></script>
     </div>
 </body>

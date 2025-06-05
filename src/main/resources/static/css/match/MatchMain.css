@@ -60,6 +60,16 @@
     z-index: 1;
 }
 
+.player-name {
+  cursor: pointer;
+}
+
+.player-name:hover {
+  background-color: #d6eaff;
+  transform: scale(1.03);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
 /* 팀 전체(세로 정렬) */
 .team {
     display: flex;

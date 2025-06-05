@@ -146,6 +146,7 @@ function setupOpenJoinQueueModal(courtId) {
     document.getElementById(`joinQueueBtn${courtId}`).disabled = true;
   });
 }
+
 // 매치 이름 및 점수 표시
 async function loadAllCourts() {
   try {
@@ -168,10 +169,50 @@ async function loadAllCourts() {
 
       courtEl.querySelector('.score-left').textContent = scoreLeft;
       courtEl.querySelector('.score-right').textContent = scoreRight;
+      courtEl.querySelector('.team-left').innerHTML =
+          teamLeft.map(p => `
+            <span class="player-name"
+                  data-id="${p.memId}"
+                  data-name="${p.memName}"
+                  data-score="${p.score || 0}">
+              ${p.memName}
+            </span>
+          `).join('');
+      courtEl.querySelector('.team-right').innerHTML =
+          teamRight.map(p => `
+            <span class="player-name"
+                  data-id="${p.memId}"
+                  data-name="${p.memName}"
+                  data-score="${p.score || 0}">
+              ${p.memName}
+            </span>
+          `).join('');
 
-      courtEl.querySelector('.team-left').innerHTML = teamLeft.map(p => `<span>${p.memName}</span>`).join('');
-      courtEl.querySelector('.team-right').innerHTML = teamRight.map(p => `<span>${p.memName}</span>`).join('');
+      if(teamLeft[0].memName === "None"){
+        courtEl.querySelector('.team-left').innerHTML = `<span>X</span>`;
+        courtEl.querySelector('.team-right').innerHTML = `<span>X</span>`;
+        courtEl.querySelector('.score-left').textContent = 'X';
+        courtEl.querySelector('.score-right').textContent = 'X';
+      }
     }
+
+    //선수 점수 증감 모달 제어
+    document.querySelectorAll('.player-name').forEach(el => {
+      el.addEventListener('click', () => {
+        const memId = el.dataset.id;
+        const name = el.dataset.name;
+        const score = el.dataset.score;
+
+        // 모달 내부에 값 설정
+        document.getElementById('modalName').textContent = name;
+        document.getElementById('modalScore').textContent = score;
+        document.getElementById('modalId').textContent = memId;
+
+        // Bootstrap 모달 열기
+        const modal = new bootstrap.Modal(document.getElementById('playerModal'));
+        modal.show();
+      });
+    });
 
   } catch (err) {
     console.error('코트 정보 로딩 실패:', err);
@@ -185,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 이후 3초마다 갱신
     setInterval(loadAllCourts, 3000);
 });
-
 
 // 초기화 함수
 function initializeCourt(courtId) {
