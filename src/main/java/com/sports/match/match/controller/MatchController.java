@@ -3,6 +3,7 @@ package com.sports.match.match.controller;
 import com.sports.match.match.model.dto.AttMemberListDto;
 import com.sports.match.match.model.dto.MatchListDto;
 import com.sports.match.match.model.dto.QueueDto;
+import com.sports.match.match.model.dto.ScoreDto;
 import com.sports.match.match.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +60,10 @@ public class MatchController {
         return ResponseEntity.ok(courtMap);
     }
 
-    //증감 모달 실행해줘야함 id랑 courtid받아감
+    @PostMapping("scorePlus")
+    @ResponseBody
+    public ResponseEntity<?> scorePlus(@RequestBody ScoreDto scoreDto){
+        int score = matchService.scorePlus(scoreDto);
+        return ResponseEntity.ok(score);
+    }
 }
