@@ -58,4 +58,6 @@ public class MatchController {
 
         return ResponseEntity.ok(courtMap);
     }
+
+    //증감 모달 실행해줘야함 id랑 courtid받아감
 }

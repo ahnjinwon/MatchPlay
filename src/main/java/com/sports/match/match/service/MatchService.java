@@ -150,7 +150,7 @@ public class MatchService {
                     .body("대기열 불러오기 실패: " + e.getMessage());
         }
     }
-    //여기에 match 정보 담아서 보내주면 받아갈거임
+
     public List<MatchListDto> getMatchMember(int courtId) {
         String key = "match:court:" + courtId;
         List<MatchListDto> noList = new ArrayList<>();

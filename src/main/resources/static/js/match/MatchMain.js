@@ -174,16 +174,19 @@ async function loadAllCourts() {
             <span class="player-name"
                   data-id="${p.memId}"
                   data-name="${p.memName}"
-                  data-score="${p.score || 0}">
+                  data-score="${p.score || 0}"
+                  data-court-id="${courtId}">
               ${p.memName}
             </span>
           `).join('');
+
       courtEl.querySelector('.team-right').innerHTML =
           teamRight.map(p => `
             <span class="player-name"
                   data-id="${p.memId}"
                   data-name="${p.memName}"
-                  data-score="${p.score || 0}">
+                  data-score="${p.score || 0}"
+                  data-court-id="${courtId}">
               ${p.memName}
             </span>
           `).join('');
@@ -202,11 +205,13 @@ async function loadAllCourts() {
         const memId = el.dataset.id;
         const name = el.dataset.name;
         const score = el.dataset.score;
+        const courtId = el.dataset.courtId;
 
         // 모달 내부에 값 설정
         document.getElementById('modalName').textContent = name;
         document.getElementById('modalScore').textContent = score;
         document.getElementById('modalId').textContent = memId;
+        document.getElementById('modalCourtId').textContent = courtId;
 
         // Bootstrap 모달 열기
         const modal = new bootstrap.Modal(document.getElementById('playerModal'));
@@ -225,6 +230,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 이후 3초마다 갱신
     setInterval(loadAllCourts, 3000);
+});
+
+// 점수 증가 버튼
+document.getElementById("btnScorePlus").addEventListener("click", async () => {
+    console.log("증가");
+    const memId = document.getElementById("modalId").textContent;
+    const courtId = document.getElementById("modalCourtId").textContent;
+
+    try {
+        const response = await fetch('/match/scorePlus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ memId, courtId })
+        });
+
+        const result = await response.json();
+        console.log("증가 결과:", result);
+
+        await loadAllCourts();
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("playerModal"));
+        modal.hide();
+
+    } catch (err) {
+        console.log("점수 증가 실패: ", err);
+    }
+});
+
+// 점수 감소 버튼
+document.getElementById("btnScoreMinus").addEventListener("click", async () => {
+    console.log("감소");
+    const memId = document.getElementById("modalId").textContent;
+    const courtId = document.getElementById("modalCourtId").textContent;
+
+    try {
+        const response = await fetch('/match/scoreMinus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ memId, courtId })
+        });
+
+        const result = await response.json();
+        console.log("감소 결과:", result);
+
+        // UI 갱신
+        await loadAllCourts();
+
+        // 모달 닫기
+        const modal = bootstrap.Modal.getInstance(document.getElementById("playerModal"));
+        modal.hide();
+
+    } catch (err) {
+        console.log("점수 감소 실패: ", err);
+    }
 });
 
 // 초기화 함수
