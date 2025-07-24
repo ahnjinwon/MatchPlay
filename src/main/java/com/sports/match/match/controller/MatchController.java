@@ -66,4 +66,13 @@ public class MatchController {
         int score = matchService.scorePlus(scoreDto);
         return ResponseEntity.ok(score);
     }
+
+    @PostMapping("scoreMinus")
+    @ResponseBody
+    public ResponseEntity<?> scoreMinus(@RequestBody ScoreDto scoreDto){
+        int score = matchService.scoreMinus(scoreDto);
+        return ResponseEntity.ok(score);
+    }
+
+    //이제 점수 증가 및 감소에서 0이하로 안떨어지고, 매치점수면 끝나도록 해줘야함
 }

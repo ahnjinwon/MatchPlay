@@ -244,4 +244,48 @@ public class MatchService {
 
         return score;
     }
+
+    public int scoreMinus(ScoreDto scoreDto) {
+        String key = "match:court:" + scoreDto.getCourtId();
+        List<String> jsonList = redisTemplate.opsForList().range(key, 0, -1);
+        int score = 0;
+        if (jsonList == null) {
+            // 매치 데이터가 없으면 처리
+            return 99;
+        }
+        String json = jsonList.get(0);
+        try{
+            Map<String, List<MatchDto.MemberDto>> matchMap = objectMapper.readValue(
+                    json,
+                    new TypeReference<Map<String, List<MatchDto.MemberDto>>>() {}
+            );
+
+            boolean updated = false;
+            for (String team : List.of("teamA", "teamB")) {
+                List<MatchDto.MemberDto> members = matchMap.get(team);
+                if (members != null) {
+                    for (MatchDto.MemberDto member : members) {
+                        if (member.getMemId().equals(scoreDto.getMemId())) {
+                            score = member.getScore() - 1;
+                            member.setScore(score);
+                            updated = true;
+                            break;
+                        }
+                    }
+                }
+                if (updated) break;
+            }
+
+            if (updated) {
+                String updatedJson = objectMapper.writeValueAsString(matchMap);
+                redisTemplate.opsForList().set(key, 0, updatedJson);
+            }else{
+                return 98;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return score;
+    }
 }
