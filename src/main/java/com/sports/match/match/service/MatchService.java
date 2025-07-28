@@ -266,10 +266,15 @@ public class MatchService {
                 if (members != null) {
                     for (MatchDto.MemberDto member : members) {
                         if (member.getMemId().equals(scoreDto.getMemId())) {
-                            score = member.getScore() - 1;
-                            member.setScore(score);
-                            updated = true;
-                            break;
+                            if(member.getScore()>0){
+                                score = member.getScore() - 1;
+                                member.setScore(score);
+                                updated = true;
+                                break;
+                            }
+                            else {
+                                return -1;
+                            }
                         }
                     }
                 }

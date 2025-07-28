@@ -276,6 +276,9 @@ document.getElementById("btnScoreMinus").addEventListener("click", async () => {
         });
 
         const result = await response.json();
+        if(result==-1){
+            alert("이미 0점입니다. 점수는 -가 될수 없습니다.")
+        }
         console.log("감소 결과:", result);
 
         // UI 갱신
