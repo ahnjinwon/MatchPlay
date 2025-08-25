@@ -146,7 +146,7 @@ function setupOpenJoinQueueModal(courtId) {
     document.getElementById(`joinQueueBtn${courtId}`).disabled = true;
   });
 }
-
+const currentScores = {};
 // 매치 이름 및 점수 표시
 async function loadAllCourts() {
   try {
@@ -161,8 +161,9 @@ async function loadAllCourts() {
       const teamLeft = players.slice(0, half);
       const teamRight = players.slice(half);
 
-      const scoreLeft = teamLeft.reduce((acc, p) => acc + (p.score || 0), 0);
-      const scoreRight = teamRight.reduce((acc, p) => acc + (p.score || 0), 0);
+      scoreLeft = teamLeft.reduce((acc, p) => acc + (p.score || 0), 0);
+      scoreRight = teamRight.reduce((acc, p) => acc + (p.score || 0), 0);
+      currentScores[courtId] = { scoreLeft, scoreRight };
 
       const courtEl = document.getElementById(`court${courtId}`);
       if (!courtEl) continue;
@@ -198,31 +199,32 @@ async function loadAllCourts() {
         courtEl.querySelector('.score-right').textContent = 'X';
       }
     }
-
-    //선수 점수 증감 모달 제어
-    document.querySelectorAll('.player-name').forEach(el => {
-      el.addEventListener('click', () => {
-        const memId = el.dataset.id;
-        const name = el.dataset.name;
-        const score = el.dataset.score;
-        const courtId = el.dataset.courtId;
-
-        // 모달 내부에 값 설정
-        document.getElementById('modalName').textContent = name;
-        document.getElementById('modalScore').textContent = score;
-        document.getElementById('modalId').textContent = memId;
-        document.getElementById('modalCourtId').textContent = courtId;
-
-        // Bootstrap 모달 열기
-        const modal = new bootstrap.Modal(document.getElementById('playerModal'));
-        modal.show();
-      });
-    });
-
   } catch (err) {
     console.error('코트 정보 로딩 실패:', err);
   }
 }
+//선수 점수 증감 모달 제어
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('.player-name');
+  if (!el) return; // 다른 곳 클릭이면 무시
+
+  const memId = el.dataset.id;
+  const name = el.dataset.name;
+  const score = el.dataset.score;
+  const courtId = el.dataset.courtId;
+
+  // 모달에 값 주입
+  document.getElementById('modalName').textContent = name;
+  document.getElementById('modalScore').textContent = score;
+  document.getElementById('modalId').textContent = memId;
+  document.getElementById('modalCourtId').textContent = courtId;
+
+  // 부트스트랩 모달 열기 (이미 인스턴스 있으면 재사용)
+  const modalEl = document.getElementById('playerModal');
+  let modal = bootstrap.Modal.getInstance(modalEl);
+  if (!modal) modal = new bootstrap.Modal(modalEl);
+  modal.show();
+});
 // loadAllCourts() 5초마다 갱신
 document.addEventListener('DOMContentLoaded', () => {
     // 처음 한 번 호출
@@ -251,6 +253,24 @@ document.getElementById("btnScorePlus").addEventListener("click", async () => {
         console.log("증가 결과:", result);
 
         await loadAllCourts();
+
+        let end = false;
+        const scores = currentScores[courtId] || { scoreLeft: 0, scoreRight: 0 };
+        if (scores.scoreLeft >= 5 && (scores.scoreLeft-scores.scoreRight)>=2) {
+            alert("왼쪽 승리. 매치를 종료합니다.");
+            end = true;
+        } else if (scores.scoreRight >= 5 && (scores.scoreRight-scores.scoreLeft)>=2) {
+            alert("오른쪽 승리. 매치를 종료합니다.");
+            end = true;
+        }
+
+        if (end) {
+          await fetch('/match/matchend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ courtId })
+          });
+        }
 
         const modal = bootstrap.Modal.getInstance(document.getElementById("playerModal"));
         modal.hide();
