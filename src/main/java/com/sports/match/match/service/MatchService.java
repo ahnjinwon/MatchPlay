@@ -2,7 +2,10 @@ package com.sports.match.match.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sports.match.match.model.dao.MatchDao;
 import com.sports.match.match.model.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -292,5 +295,110 @@ public class MatchService {
         }
 
         return score;
+    }
+
+    public int matchend(int courtId) {
+        Map<String, Object> map = new HashMap<>();
+        matchDao.getMatchId(map);
+        int matchId = (int) map.get("matchId");
+
+        String key = "queue:court:" + courtId;
+        String match = "match:court:" + courtId;
+        List<String> jsonList = redisTemplate.opsForList().range(match, 0, -1);
+        List<MatchHistoryDto> dtoList = new ArrayList<>();
+
+        try{
+            for (String json : jsonList) {
+                JsonNode root = objectMapper.readTree(json);
+
+                // teamA
+                if (root.has("teamA")) {
+                    for (JsonNode member : root.get("teamA")) {
+                        MatchHistoryDto dto = new MatchHistoryDto();
+                        dto.setMatchId(matchId);
+                        dto.setTeam("A");
+                        dto.setMemId(member.get("memId").asText());
+                        dto.setMemName(member.get("memName").asText());
+                        dto.setScore(member.get("score").asInt());
+                        dtoList.add(dto);
+                    }
+                }
+
+                // teamB
+                if (root.has("teamB")) {
+                    for (JsonNode member : root.get("teamB")) {
+                        MatchHistoryDto dto = new MatchHistoryDto();
+                        dto.setMatchId(matchId);
+                        dto.setTeam("B");
+                        dto.setMemId(member.get("memId").asText());
+                        dto.setMemName(member.get("memName").asText());
+                        dto.setScore(member.get("score").asInt());
+                        dtoList.add(dto);
+                    }
+                }
+            }
+
+            matchDao.insertMatchHistoryList(dtoList);
+
+            for (MatchHistoryDto dto : dtoList) {
+                String memberKey = "attendee:info:" + dto.getMemId();
+                redisTemplate.opsForHash().put(memberKey, "status", "0");
+            }
+            redisTemplate.delete(match);
+
+            String queuedJson = redisTemplate.opsForList().leftPop(key);
+            if (queuedJson != null) {
+                // 2) score=0 세팅해서 match JSON 구성
+                JsonNode qRoot = objectMapper.readTree(queuedJson);
+
+                ObjectNode nextMatchNode = objectMapper.createObjectNode();
+                ArrayNode teamAWithScore = objectMapper.createArrayNode();
+                ArrayNode teamBWithScore = objectMapper.createArrayNode();
+
+                // teamA
+                if (qRoot.has("teamA")) {
+                    for (JsonNode m : qRoot.get("teamA")) {
+                        ObjectNode p = objectMapper.createObjectNode();
+                        p.put("memId",   m.get("memId").asText());
+                        p.put("memName", m.get("memName").asText());
+                        p.put("score",   0);
+                        teamAWithScore.add(p);
+                    }
+                }
+                // teamB
+                if (qRoot.has("teamB")) {
+                    for (JsonNode m : qRoot.get("teamB")) {
+                        ObjectNode p = objectMapper.createObjectNode();
+                        p.put("memId",   m.get("memId").asText());
+                        p.put("memName", m.get("memName").asText());
+                        p.put("score",   0);
+                        teamBWithScore.add(p);
+                    }
+                }
+
+                nextMatchNode.set("teamA", teamAWithScore);
+                nextMatchNode.set("teamB", teamBWithScore);
+
+                String nextMatchJson = objectMapper.writeValueAsString(nextMatchNode);
+
+                // 3) 진행중 매치 키에 넣기 (리스트 0번 인덱스 사용)
+                //    위에서 redisTemplate.delete(match);로 비워둔 상태
+                redisTemplate.opsForList().leftPush(match, nextMatchJson);
+
+                // 4) 참가자 상태를 in-match("1")로 갱신
+                for (JsonNode p : teamAWithScore) {
+                    String memberKey = "attendee:info:" + p.get("memId").asText();
+                    redisTemplate.opsForHash().put(memberKey, "status", "1");
+                }
+                for (JsonNode p : teamBWithScore) {
+                    String memberKey = "attendee:info:" + p.get("memId").asText();
+                    redisTemplate.opsForHash().put(memberKey, "status", "1");
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return matchId;
     }
 }

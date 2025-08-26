@@ -24,3 +24,19 @@ CREATE TABLE attendance (
     ON DELETE CASCADE,                               -- 회원 삭제 시 출석 기록도 삭제
   CONSTRAINT unique_attendance UNIQUE (mem_no, att_date)  -- 같은 날 중복 출석 방지
 );
+
+CREATE TABLE match_info (
+  match_id INT AUTO_INCREMENT PRIMARY KEY,         -- 경기 고유번호
+  match_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP   -- 경기 종료 기록 시각
+);
+
+CREATE TABLE history (
+  history_no INT AUTO_INCREMENT PRIMARY KEY,  -- 고유 PK
+  match_id   INT NOT NULL,                    -- 어떤 경기인지 (FK)
+  mem_id     VARCHAR(100) NOT NULL,           -- 플레이어 ID
+  mem_name   VARCHAR(100) NOT NULL,           -- 플레이어 이름
+  score      INT NOT NULL,                    -- 개인 점수
+  team       VARCHAR(10) NOT NULL,            -- A or B 팀
+  matched_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 기록 생성 시각
+  CONSTRAINT fk_match FOREIGN KEY (match_id) REFERENCES match_info(match_id)
+);

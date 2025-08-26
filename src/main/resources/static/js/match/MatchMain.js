@@ -268,7 +268,7 @@ document.getElementById("btnScorePlus").addEventListener("click", async () => {
           await fetch('/match/matchend', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ courtId })
+            body: JSON.stringify(courtId)
           });
         }
 

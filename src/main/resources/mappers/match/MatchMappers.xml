@@ -12,4 +12,19 @@
         WHERE
         b.att_date = #{today}
     </select>
+
+    <insert id="getMatchId" parameterType="map">
+        INSERT INTO match_info () VALUES ();
+        <selectKey keyProperty="matchId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertMatchHistoryList">
+        INSERT INTO history (match_id, mem_id, mem_name, score, team)
+        VALUES
+        <foreach collection="list" item="dto" separator=",">
+            (#{dto.matchId}, #{dto.memId}, #{dto.memName}, #{dto.score}, #{dto.team})
+        </foreach>
+    </insert>
 </mapper>

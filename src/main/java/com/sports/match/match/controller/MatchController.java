@@ -74,5 +74,10 @@ public class MatchController {
         return ResponseEntity.ok(score);
     }
 
-    // 매치점수면 끝나도록 해줘야함
+    @PostMapping("matchend")
+    @ResponseBody
+    public ResponseEntity<?> matchEnd(@RequestBody int courtId){
+        int result = matchService.matchend(courtId);
+        return ResponseEntity.ok(result);
+    }
 }
