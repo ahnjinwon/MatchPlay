@@ -301,6 +301,7 @@ public class MatchService {
         Map<String, Object> map = new HashMap<>();
         matchDao.getMatchId(map);
         int matchId = (int) map.get("matchId");
+        int a_score = 0, b_score = 0;
 
         String key = "queue:court:" + courtId;
         String match = "match:court:" + courtId;
@@ -310,17 +311,18 @@ public class MatchService {
         try{
             for (String json : jsonList) {
                 JsonNode root = objectMapper.readTree(json);
-
                 // teamA
                 if (root.has("teamA")) {
                     for (JsonNode member : root.get("teamA")) {
                         MatchHistoryDto dto = new MatchHistoryDto();
                         dto.setMatchId(matchId);
+                        dto.setCourtId(courtId);
                         dto.setTeam("A");
                         dto.setMemId(member.get("memId").asText());
                         dto.setMemName(member.get("memName").asText());
                         dto.setScore(member.get("score").asInt());
                         dtoList.add(dto);
+                        a_score+=member.get("score").asInt();
                     }
                 }
 
@@ -329,12 +331,31 @@ public class MatchService {
                     for (JsonNode member : root.get("teamB")) {
                         MatchHistoryDto dto = new MatchHistoryDto();
                         dto.setMatchId(matchId);
+                        dto.setCourtId(courtId);
                         dto.setTeam("B");
                         dto.setMemId(member.get("memId").asText());
                         dto.setMemName(member.get("memName").asText());
                         dto.setScore(member.get("score").asInt());
                         dtoList.add(dto);
+                        b_score+=member.get("score").asInt();
                     }
+                }
+            }
+
+            String aResult, bResult;
+            if (a_score > b_score) {
+                aResult = "W";
+                bResult = "L";
+            } else {
+                aResult = "L";
+                bResult = "W";
+            }
+
+            for (MatchHistoryDto dto : dtoList) {
+                if ("A".equals(dto.getTeam())) {
+                    dto.setResult(aResult);
+                } else {
+                    dto.setResult(bResult);
                 }
             }
 
@@ -348,7 +369,6 @@ public class MatchService {
 
             String queuedJson = redisTemplate.opsForList().leftPop(key);
             if (queuedJson != null) {
-                // 2) score=0 세팅해서 match JSON 구성
                 JsonNode qRoot = objectMapper.readTree(queuedJson);
 
                 ObjectNode nextMatchNode = objectMapper.createObjectNode();
@@ -381,11 +401,8 @@ public class MatchService {
 
                 String nextMatchJson = objectMapper.writeValueAsString(nextMatchNode);
 
-                // 3) 진행중 매치 키에 넣기 (리스트 0번 인덱스 사용)
-                //    위에서 redisTemplate.delete(match);로 비워둔 상태
                 redisTemplate.opsForList().leftPush(match, nextMatchJson);
 
-                // 4) 참가자 상태를 in-match("1")로 갱신
                 for (JsonNode p : teamAWithScore) {
                     String memberKey = "attendee:info:" + p.get("memId").asText();
                     redisTemplate.opsForHash().put(memberKey, "status", "1");

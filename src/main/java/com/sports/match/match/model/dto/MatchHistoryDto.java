@@ -14,4 +14,5 @@ public class MatchHistoryDto {
     private String team;
     private String memName;
     private Integer score = 0;
+    private String result;
 }

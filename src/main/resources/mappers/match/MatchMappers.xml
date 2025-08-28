@@ -21,10 +21,10 @@
     </insert>
 
     <insert id="insertMatchHistoryList">
-        INSERT INTO history (match_id, mem_id, mem_name, score, team)
+        INSERT INTO history (match_id, court_id, result, mem_id, mem_name, score, team)
         VALUES
         <foreach collection="list" item="dto" separator=",">
-            (#{dto.matchId}, #{dto.memId}, #{dto.memName}, #{dto.score}, #{dto.team})
+            (#{dto.matchId}, #{dto.courtId}, #{dto.result}, #{dto.memId}, #{dto.memName}, #{dto.score}, #{dto.team})
         </foreach>
     </insert>
 </mapper>
