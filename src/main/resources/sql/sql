@@ -33,6 +33,8 @@ CREATE TABLE match_info (
 CREATE TABLE history (
   history_no INT AUTO_INCREMENT PRIMARY KEY,  -- 고유 PK
   match_id   INT NOT NULL,                    -- 어떤 경기인지 (FK)
+  court_id	 INT NOT NULL,
+  result 	 CHAR(1) CHECK (result IN ('W','L')),
   mem_id     VARCHAR(100) NOT NULL,           -- 플레이어 ID
   mem_name   VARCHAR(100) NOT NULL,           -- 플레이어 이름
   score      INT NOT NULL,                    -- 개인 점수

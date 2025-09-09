@@ -411,11 +411,13 @@ public class MatchService {
                     String memberKey = "attendee:info:" + p.get("memId").asText();
                     redisTemplate.opsForHash().put(memberKey, "status", "1");
                 }
+
+                return 1;
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return matchId;
+        return 0;
     }
 }
