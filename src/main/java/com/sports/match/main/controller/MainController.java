@@ -21,7 +21,6 @@ public class MainController {
     public String main(Authentication authentication, Model model) throws JsonProcessingException {
         if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            //authService.mailtest(userDetails.getMemEmail());
             boolean result = authService.getAttend(userDetails.getMemNo());
             model.addAttribute("att",result);
         }

@@ -5,10 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, Principal {
     private final int memNo;
     private final String username;
     private final String password;
@@ -33,6 +34,11 @@ public class CustomUserDetails implements UserDetails {
         this.approved = memberDto.getApproved();
         this.profileImg = memberDto.getProfileImg();
         this.authorities = AuthorityUtils.createAuthorityList(memberDto.getMemRole());
+    }
+
+    @Override
+    public String getName() {
+        return username;
     }
 
     public String getMemEmail() {

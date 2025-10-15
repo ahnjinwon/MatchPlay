@@ -18,6 +18,7 @@ public class AuthApiController  {
     public int attend(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         authService.registQueue(userDetails);
+        authService.registSocket(userDetails);
         boolean result = authService.attend(userDetails.getMemNo());
         return  result ? 1 : 0;
     }

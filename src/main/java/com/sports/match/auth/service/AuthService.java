@@ -90,4 +90,8 @@ public class AuthService {
         redisTemplate.opsForSet().remove(setKey, userDetails.getUsername());
         redisTemplate.delete(hashKey);
     }
+
+    public void registSocket(CustomUserDetails userDetails) {
+        String s = userDetails.getUsername();
+    }
 }
