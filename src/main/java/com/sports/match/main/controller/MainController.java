@@ -24,8 +24,10 @@ public class MainController {
             boolean result = authService.getAttend(userDetails.getMemNo());
             model.addAttribute("att",result);
         }
+
         List<String> allAtt = authService.getAllAtt();
         int memSize = authService.getMemSize();
+
         model.addAttribute("all_att",allAtt);
         model.addAttribute("att_size",allAtt.size());
         model.addAttribute("mem_size",memSize);

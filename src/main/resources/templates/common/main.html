@@ -12,6 +12,7 @@
         <div sec:authorize="!isAuthenticated()">
             <h1 align="center">🏸 OO클럽에 오신걸 환영합니다. 🏸</h1>
             <p>홍보 포스터? 머이런거</p>
+            <button onclick="console.log(stomp.connected ? '연결됨 ✅' : '끊김 ❌')">소켓 상태 확인</button>
         </div>
         <div sec:authorize="isAuthenticated()">
             <div>
@@ -32,8 +33,12 @@
             <div th:unless="${att}">
                 <button id="attendButton" type="button" class="btn btn-primary btn-sm">출석 하기</button>
             </div>
+            <button onclick="console.log(stomp.connected ? '연결됨 ✅' : '끊김 ❌')">소켓 상태 확인</button>
 
         </div>
+        <script th:inline="javascript">
+            const isAttended = /*[[${att}]]*/ false; // 서버에서 받은 출석 여부
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
         <script type="text/javascript" th:src="@{/js/common/main.js}"></script>

@@ -23,6 +23,11 @@ function connectWS() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    if (typeof isAttended !== 'undefined' && isAttended === true) {
+        console.log("출석 상태 → 자동 소켓 연결");
+        connectWS();
+      }
     const attendButton = document.getElementById('attendButton');
     const attendCancelButton = document.getElementById('attendCancelButton');
 
@@ -66,7 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         alert('이미 취소하였습니다.');
                     }
-                    location.reload();
+                    // ✅ 소켓 연결되어 있으면 끊기
+                    if (stomp && stomp.connected) {
+                        stomp.disconnect(() => {
+                            location.reload(); // 해제 완료 후 새로고침
+                        });
+                    } else {
+                        location.reload();
+                    }
                 })
                 .catch(error => console.error('Error:', error));
         });
