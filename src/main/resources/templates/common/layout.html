@@ -20,6 +20,15 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
     ></script>
+
+    <!--소켓 통신-->
+    <meta name="auth" content="true" sec:authorize="isAuthenticated()"/>
+    <div sec:authorize="isAuthenticated()">
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+        <script src="/js/socket/socket.js"></script>
+    </div>
+
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/layout.css}">
 </head>
 <body>
@@ -129,13 +138,14 @@
     const passwordField = document.getElementById("password");
     const eyeIcon = document.getElementById("eyeIcon");
 
-    togglePassword.addEventListener("click", function () {
+    if (togglePassword && passwordField && eyeIcon) { // ✅ 존재할 때만 실행
+      togglePassword.addEventListener("click", function () {
         const isHidden = passwordField.type === "password";
         passwordField.type = isHidden ? "text" : "password";
 
-        // 아이콘 변경
         eyeIcon.classList.toggle("fa-eye");
         eyeIcon.classList.toggle("fa-eye-slash");
-    });
+      });
+    }
 </script>
 </html>

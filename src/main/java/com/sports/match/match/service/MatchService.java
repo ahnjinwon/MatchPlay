@@ -11,6 +11,7 @@ import com.sports.match.match.model.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class MatchService {
     private final MatchDao matchDao;
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
+    private final SimpMessagingTemplate template;
 
     public List<AttMemberListDto> getAttMemList() {
         String setKey = "attendees";
@@ -94,6 +96,14 @@ public class MatchService {
                 for (QueueDto.MemberDto member : allMembers) {
                     String memberKey = "attendee:info:" + member.getMemId();
                     redisTemplate.opsForHash().put(memberKey, "status", "2");
+
+                    // ✅ STOMP로 개인 알림 전송
+                    // 클라이언트가 /user/queue/notice 구독 중이어야 함 나중에 db로 보내고 메시지 누적되도록 변경 예정
+                    template.convertAndSendToUser(
+                            member.getMemId(),   // user-name
+                            "/queue/notice",
+                            "매치가 시작되었습니다. (코트: " + queueDto.getCourtId() + ")"
+                    );
                 }
 
                 return ResponseEntity.ok(Map.of("message", "현재 진행중인 매치가 없으므로 바로 매치로 이동합니다."));
@@ -119,6 +129,12 @@ public class MatchService {
                 for (QueueDto.MemberDto member : allMembers) {
                     String memberKey = "attendee:info:" + member.getMemId();
                     redisTemplate.opsForHash().put(memberKey, "status", "1");
+
+                    template.convertAndSendToUser(
+                            member.getMemId(),   // user-name
+                            "/queue/notice",
+                            "대기열에 등록되었습니다. (코트: " + queueDto.getCourtId() + ")"
+                    );
                 }
 
                 return ResponseEntity.ok(Map.of("message", "대기열에 등록되었습니다."));
@@ -364,6 +380,11 @@ public class MatchService {
             for (MatchHistoryDto dto : dtoList) {
                 String memberKey = "attendee:info:" + dto.getMemId();
                 redisTemplate.opsForHash().put(memberKey, "status", "0");
+                template.convertAndSendToUser(
+                        dto.getMemId(),   // user-name
+                        "/queue/notice",
+                        "매치가 종료되었습니다. (코트: " + dto.getCourtId() + ")"
+                );
             }
             redisTemplate.delete(match);
 
@@ -406,10 +427,20 @@ public class MatchService {
                 for (JsonNode p : teamAWithScore) {
                     String memberKey = "attendee:info:" + p.get("memId").asText();
                     redisTemplate.opsForHash().put(memberKey, "status", "1");
+                    template.convertAndSendToUser(
+                            p.get("memId").asText(),   // user-name
+                            "/queue/notice",
+                            "매치가 시작되었습니다. (코트: " + courtId + ")"
+                    );
                 }
                 for (JsonNode p : teamBWithScore) {
                     String memberKey = "attendee:info:" + p.get("memId").asText();
                     redisTemplate.opsForHash().put(memberKey, "status", "1");
+                    template.convertAndSendToUser(
+                            p.get("memId").asText(),   // user-name
+                            "/queue/notice",
+                            "매치가 시작되었습니다. (코트: " + courtId + ")"
+                    );
                 }
 
                 return 1;
