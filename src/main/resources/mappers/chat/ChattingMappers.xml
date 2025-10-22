@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sports.match.chat.model.dao.ChattingDao">
+    <select id="getuserInfo" resultType="com.sports.match.chat.model.dto.userInfoDto">
+        SELECT
+            m.mem_id,
+            m.mem_name,
+            m.grade,
+            m.mem_tel,
+            CASE
+                WHEN a.mem_no IS NOT NULL THEN '출석'
+                ELSE '미출석'
+            END AS status
+        FROM member AS m
+        LEFT JOIN attendance AS a
+            ON m.mem_no = a.mem_no
+            AND a.att_date = CURDATE()
+        ORDER BY
+            CASE
+                WHEN a.mem_no IS NOT NULL THEN 1
+                ELSE 2
+            END,
+            m.mem_name ASC
+    </select>
+
+</mapper>

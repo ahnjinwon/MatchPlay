@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <title>Match Play</title>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/match/MatchMain.css}">-->
+</head>
+<body>
+    <div layout:fragment="content">
+        <form th:action="@{/chat/finduser}" method="post">
+            <input name="memName" id="memName" type="text" placeholder="이름 입력" required>
+            <button class="btn btn-outline-secondary" type="button" id="searchUser">
+                검색
+            </button>
+        </form>
+
+        <ul>
+            <li th:each="info : ${infoList}" th:text="${info.memName} + ' (' + ${info.status} + ')'"></li>
+        </ul>
+    </div>
+
+</body>
+</html>

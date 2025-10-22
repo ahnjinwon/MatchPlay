@@ -51,7 +51,6 @@
   // 출석 체크 성공 시 호출
   function attendanceOn() {
     setAttendance(true);   // 새로고침해도 유지
-    connectWS();           // 즉시 연결
   }
 
   // 출석 취소(또는 오늘 미출석) 시 호출
