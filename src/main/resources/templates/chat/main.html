@@ -6,21 +6,32 @@
 >
 <head>
     <title>Match Play</title>
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/match/MatchMain.css}">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/chat/main.css}">
 </head>
 <body>
     <div layout:fragment="content">
-        <form th:action="@{/chat/finduser}" method="post">
-            <input name="memName" id="memName" type="text" placeholder="이름 입력" required>
-            <button class="btn btn-outline-secondary" type="button" id="searchUser">
-                검색
-            </button>
-        </form>
+        <div>
+            <div>
+                <input name="memName" id="memName" type="text" placeholder="이름 입력" required>
+                <button class="btn btn-outline-secondary" type="button" id="searchUser">
+                    검색
+                </button>
+            </div>
 
-        <ul>
-            <li th:each="info : ${infoList}" th:text="${info.memName} + ' (' + ${info.status} + ')'"></li>
-        </ul>
+            <ul id="memberList">
+                <li class="member"
+                    th:each="info : ${infoList}"
+                    th:data-id="${info.memId}"
+                    th:data-name="${info.memName}"
+                    th:data-grade="${info.grade}"
+                    th:data-tel="${info.memTel}"
+                    th:data-status="${info.status}"
+                    th:text="${info.memName} + ' (' + ${info.status} + ')'">
+                </li>
+            </ul>
+        </div>
+
+        <script type="text/javascript" th:src="@{/js/chat/main.js}"></script>
     </div>
-
 </body>
 </html>
